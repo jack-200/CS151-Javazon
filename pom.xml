@@ -58,7 +58,7 @@
             <!-- Default configuration for running with: mvn clean javafx:run -->
             <id>default-cli</id>
             <configuration>
-              <mainClass>edu.sjsu.cs.cs151javazon/edu.sjsu.cs.cs151javazon.HelloApplication</mainClass>
+              <mainClass>edu.sjsu.cs.cs151javazon/edu.sjsu.cs.cs151javazon.Javazon</mainClass>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
               <jlinkImageName>app</jlinkImageName>
