@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Javazon extends Application {
+    private userRoles role;
     public static void main(String[] args) {
         launch();
     }
@@ -19,4 +20,7 @@ public class Javazon extends Application {
         stage.setScene(scene);
         stage.show();
     }
+    public userRoles getRole() { return role; }
+    public void setRole(userRoles role) { this.role = role; }
+    public enum userRoles {BUYER, SELLER, GUEST}
 }
