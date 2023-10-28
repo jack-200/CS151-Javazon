@@ -8,8 +8,12 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Javazon extends Application {
+    private final static AccountManager AM = AccountManager.getInstance();
+    private final static ProductManager PM = ProductManager.getInstance();
     private userRoles role;
     public static void main(String[] args) {
+        AM.loadAccounts();
+        PM.loadProducts();
         launch();
     }
     @Override
