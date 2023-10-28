@@ -5,6 +5,7 @@ public class Account {
     private String lastName;
     private String address;
     private String paymentMethod;
+    private userRoles role;
     public Account(String firstName, String lastName, String address, String paymentMethod) {
         setFirstName(firstName);
         setLastName(lastName);
@@ -23,4 +24,7 @@ public class Account {
     public void setAddress(String address) { this.address = address; }
     public String getPaymentMethod() { return paymentMethod; }
     public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
+    public userRoles getRole() { return role; }
+    public void setRole(userRoles role) { this.role = role; }
+    public enum userRoles {BUYER, SELLER}
 }

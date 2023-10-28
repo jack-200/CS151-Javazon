@@ -10,7 +10,6 @@ import java.io.IOException;
 public class Javazon extends Application {
     private final static AccountManager AM = AccountManager.getInstance();
     private final static ProductManager PM = ProductManager.getInstance();
-    private userRoles role;
     public static void main(String[] args) {
         AM.loadAccounts();
         PM.loadProducts();
@@ -24,7 +23,4 @@ public class Javazon extends Application {
         stage.setScene(scene);
         stage.show();
     }
-    public userRoles getRole() { return role; }
-    public void setRole(userRoles role) { this.role = role; }
-    public enum userRoles {BUYER, SELLER, GUEST}
 }
