@@ -1,3 +1,12 @@
+# UML Diagrams
+
+| Diagram | Description |
+|---------|-------------|
+| [Class Diagram](JavazonClassDiagram.png) | Shows the structure and relationship between classes |
+| [Use Case Diagram](JavazonUseCaseDiagram.pdf) | Shows the user-system interaction |
+| [State Diagram](JavazonStateDiagram.pdf) | Describes the states and transitions of the systems
+| [Sequence Diagram](JavazonSequenceDiagram.pdf) | Outlines object interactions and flow 
+
 # Class Diagram
 
 Javazon will serve as the main driver program. The GUI will have different options depending on the user’s role. The user’s role will be stored as a userRole with the enum userRoles defining the possible values of BUYER, SELLER, or GUEST. [Class Diagram](https://github.com/jack-200/CS151-Javazon/blob/main/diagrams/Javazon%20Class%20Diagram.png)
