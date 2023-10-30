@@ -8,8 +8,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Javazon extends Application {
-    private final static AccountManager AM = AccountManager.getInstance();
-    private final static ProductManager PM = ProductManager.getInstance();
+    private static final ShoppingCart SC = ShoppingCart.getInstance();
+    private static final ProductManager PM = ProductManager.getInstance();
+    private static final AccountManager AM = AccountManager.getInstance();
     public static void main(String[] args) {
         AM.loadAccounts();
         PM.loadProducts();
