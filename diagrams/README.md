@@ -1,6 +1,6 @@
 # Class Diagram
 
-Javazon will serve as the main driver program. The GUI will have different options depending on the user’s role. The user’s role will be stored as a userRole with the enum userRoles defining the possible values of BUYER, SELLER, or GUEST.
+Javazon will serve as the main driver program. The GUI will have different options depending on the user’s role. The user’s role will be stored as a userRole with the enum userRoles defining the possible values of BUYER, SELLER, or GUEST. [Class Diagram](https://github.com/jack-200/CS151-Javazon/blob/main/diagrams/Javazon%20Class%20Diagram.png)
 - Javazon.java
 
 **Features:**
@@ -37,3 +37,22 @@ Allow the user to select a star rating and leave a review. Rank the products bas
 # Use Case Diagram
 
 Users looking to browse the store and add items to the shopping cart will be allowed to do so without signing into an account. On the other hand, a seller will have the option to sell an item on the marketplace. Both buyers and sellers will need to enter their correct login credentials to do role-specific tasks like checking out and selling items.
+[Use Case Diagram](https://github.com/jack-200/CS151-Javazon/blob/main/diagrams/Use%20Case%20Diagram.pdf)
+
+# State Diagram
+
+If the user was browsing as a guest and finds an item they want to buy: sign up if they don’t have an account, sign in, and return to the product information page(The user does not need to search for the item again)Then the user chooses to add the item to the shopping cart or wish list.
+
+**Payment process:**
+
+- Confirm order: review the items in the shopping cart (item, quantity, cost) before proceeding to checkout.
+- Proceed to checkout: provide shipping address and payment information.
+- Once payment authorization is complete, place the order.
+
+[State Diagram](https://github.com/jack-200/CS151-Javazon/blob/main/diagrams/JavazonStateDiagram.drawio.pdf)
+
+# Sequence Diagram
+
+The sequence diagram depicts a user's journey on the "Javazon" online marketplace. Initially, the user either creates an account or logs in. After accessing the platform, the user views products, selects one for detailed information, and can leave a review. The chosen product can be added to the shopping cart, and the user proceeds to checkout. The interaction concludes with a transaction confirmation.
+
+[Sequence Diagram](https://github.com/jack-200/CS151-Javazon/blob/main/diagrams/JL%20-%20Javazon%20Sequence%20Diagram.pdf)
