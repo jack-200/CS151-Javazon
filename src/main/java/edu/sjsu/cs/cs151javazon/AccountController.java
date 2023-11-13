@@ -14,6 +14,8 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.util.ArrayList;
 
+import static edu.sjsu.cs.cs151javazon.AccountManager.textFile;
+
 public class AccountController {
     @FXML
     private Label FirstNameLabel,LastNameLabel,EmailLabel,UsernameLabel,PasswordLabel;
@@ -24,7 +26,7 @@ public class AccountController {
     @FXML
     private Hyperlink DontHaveAccount;
 
-    ArrayList<Account> accounts =  AccountManager.getInstance().deserializeArrList("accounts.txt");
+    ArrayList<Account> accounts =  AccountManager.getInstance().deserializeArrList(textFile);
 
     @FXML
     protected void onSignUpClick() throws PasswordException {
@@ -36,7 +38,7 @@ public class AccountController {
                         Account account = Account.getInstance(firstname.getText(),lastname.getText(),email.getText(),username.getText(),password.getText());
                         accounts.add(account);
                         AccountManager.getInstance().loadAccount(accounts);
-                        FileOutputStream fileOutputStream = new FileOutputStream("Accounts.txt");
+                        FileOutputStream fileOutputStream = new FileOutputStream(textFile);
                         ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
                         out.writeObject(accounts);
                         System.out.println("acc created!");
