@@ -1,6 +1,5 @@
 package edu.sjsu.cs.cs151javazon;
 
-import edu.sjsu.cs.cs151javazon.PasswordExceptions.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
