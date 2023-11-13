@@ -1,11 +1,13 @@
 package edu.sjsu.cs.cs151javazon;
 
+import java.io.*;
 import java.util.ArrayList;
 
-public class AccountManager {
+public class AccountManager implements Serializable {
     private static AccountManager instance;
-    private final String textFile = "Accounts.txt";
-    private final ArrayList<Account> accounts = new ArrayList<>();
+    public static int numUsers;
+    private String textFile = "Accounts.txt";
+    private ArrayList<Account> accounts = new ArrayList<>();
     private AccountManager() { }
     public static AccountManager getInstance() {
         if (instance == null) {
@@ -13,12 +15,44 @@ public class AccountManager {
         }
         return instance;
     }
+    // load new account to ArrayList
+    public void loadAccount(ArrayList<Account> accounts) {
+        this.accounts = accounts;
+    }
+
+    //load all accounts
     public void loadAccounts() {
+        accounts = deserializeArrList("Accounts.txt");
     }
-    public void addAccount(Account a) {
+    public ArrayList<Account> addAccount(Account a) {
         accounts.add(a);
+        return accounts;
     }
-    public Account searchAccount() {
-        return accounts.get(0);
+    public Account searchAccount(String username) {
+        for(Account account : accounts){
+            if(account.getUserName().equals(username)){
+                return account;
+            }
+        }
+        return null;
+    }
+    public ArrayList<Account> deserializeArrList(String file) {
+        ArrayList<Account> accounts;
+        try {
+            FileInputStream fileInputStream = new FileInputStream(file);
+            ObjectInputStream in = new ObjectInputStream(fileInputStream);
+            accounts = (ArrayList<Account>) in.readObject();
+            AccountManager.numUsers = accounts.size();
+
+
+            return accounts;
+        } catch (EOFException | ClassNotFoundException e) {
+            return new ArrayList<>();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
