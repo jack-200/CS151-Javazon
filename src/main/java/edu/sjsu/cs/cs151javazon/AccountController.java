@@ -72,8 +72,10 @@ public class AccountController {
     protected void onSignInClick(){ //Sample run: Username:ykk Password:qWert#456
         if(!username.getText().isEmpty() && !password.getText().isEmpty()){
                 Account account = AccountManager.getInstance().searchAccount(username.getText());
-                System.out.println(account.getUserName() + " " + account.getPassword());
-                if(account != null && password.getText().equals(account.getPassword())){
+                if(account == null){
+                    System.out.println("Account does not exist");
+                }
+                else if (password.getText().equals(account.getPassword())) {
                     System.out.println("signed in");
                 }
                 else{
