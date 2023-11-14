@@ -23,10 +23,10 @@ public class Javazon extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Javazon = stage;
-        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 500, 500);
-        //        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("signIn.fxml"));
-        //        Scene scene = new Scene(fxmlLoader.load());
+//        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("hello-view.fxml"));
+//        Scene scene = new Scene(fxmlLoader.load(), 500, 500);
+                FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("signUp.fxml"));
+                Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Javazon");
         stage.setScene(scene);
         stage.show();

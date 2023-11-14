@@ -4,9 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -18,16 +16,25 @@ import static edu.sjsu.cs.cs151javazon.AccountManager.textFile;
 
 public class AccountController {
     @FXML
-    private Label FirstNameLabel,LastNameLabel,EmailLabel,UsernameLabel,PasswordLabel;
+    private Label FirstNameLabel,LastNameLabel,EmailLabel,UsernameLabel,PasswordLabel,AddressLabel;
     @FXML
-    private TextField firstname,lastname,email,username,password;
+    private TextField firstname,lastname,email,username,password,address;
     @FXML
     private Text passwordReq,uppercaseReq,lowercaseReq,specialCharReq,numberReq,lengthReq;
     @FXML
-    private Hyperlink DontHaveAccount;
+    private Hyperlink DontHaveAccount,HaveAccount;
+    @FXML
+    private Button buyer,seller;
+
 
     ArrayList<Account> accounts =  AccountManager.getInstance().deserializeArrList(textFile);
-
+    @FXML
+    protected void onBuyerClick(){
+    }
+    @FXML
+    protected void onSellerClick(){
+    }
+    static Account current = null;
     @FXML
     protected void onSignUpClick() throws PasswordException {
         if(!firstname.getText().isEmpty() && !lastname.getText().isEmpty() && !email.getText().isEmpty() && !username.getText().isEmpty()) {
@@ -36,12 +43,17 @@ public class AccountController {
                     checkPassword(password.getText());
                     if(AccountManager.getInstance().searchAccount(username.getText()) == null){
                         Account account = Account.getInstance(firstname.getText(),lastname.getText(),email.getText(),username.getText(),password.getText());
+                        current = account;
                         accounts.add(account);
                         AccountManager.getInstance().loadAccount(accounts);
                         FileOutputStream fileOutputStream = new FileOutputStream(textFile);
                         ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
                         out.writeObject(accounts);
                         System.out.println("acc created!");
+                        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("signUp-finish.fxml"));
+                        Scene scene = new Scene(fxmlLoader.load());
+                        Javazon.getStage().setScene(scene);
+
                     }
                     else{
                         System.out.println("cant create acc");
@@ -70,11 +82,33 @@ public class AccountController {
         }
     }
     @FXML
-    protected void onSignInClick(){ //Sample run: Username:ykk Password:qWert#456
+    protected void onSignUpSaveClick() throws IOException {
+        if(address.getText().isEmpty()){
+            System.out.println("Fill out address");
+        }
+        else{
+            current.setAddress(address.getText());
+            if(buyer.isPressed()){
+                current.setRole(Account.userRoles.BUYER);
+            }
+            else{
+                current.setRole(Account.userRoles.SELLER);
+            }
+
+            FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("hello-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            Javazon.getStage().setScene(scene);
+        }
+
+    }
+    @FXML
+    protected void onSignInClick(){
         if(!username.getText().isEmpty() && !password.getText().isEmpty()){
                 Account account = AccountManager.getInstance().searchAccount(username.getText());
-                System.out.println(account.getUserName() + " " + account.getPassword());
-                if(account != null && password.getText().equals(account.getPassword())){
+                if(account == null){
+                    System.out.println("Account does not exist");
+                }
+                else if(password.getText().equals(account.getPassword())){
                     System.out.println("signed in");
                 }
                 else{
@@ -85,11 +119,18 @@ public class AccountController {
             System.out.println("Fill out all text fields");
         }
     }
+
     @FXML
     protected void onDontHaveAccountClick() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("signUp.fxml"));
-        Scene scene1 = new Scene(fxmlLoader.load());
-        Javazon.getStage().setScene(scene1);
+        Scene scene = new Scene(fxmlLoader.load());
+        Javazon.getStage().setScene(scene);
+    }
+    @FXML
+    protected void onHaveAccountClick() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("signIn.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        Javazon.getStage().setScene(scene);
     }
 
     public void checkPassword(String password) throws PasswordException{
