@@ -17,6 +17,7 @@ import java.util.Objects;
 public class MainProductPageController {
     private static final double COLUMN_WIDTH = 200;
     private static final double GAP = 10;
+
     public Parent getRoot(Stage primaryStage) {
         File folder = new File("src/main/resources/images");
         GridPane gridPane = new GridPane(GAP, GAP);

@@ -4,6 +4,7 @@ public class PasswordException extends Exception {
     public PasswordException() {
         super("PasswordException thrown");
     }
+
     public PasswordException(String message) {
         super(message);
     }
