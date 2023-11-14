@@ -8,7 +8,8 @@ public class AccountManager implements Serializable {
     public static int numUsers;
     private static AccountManager instance;
     private ArrayList<Account> accounts = new ArrayList<>();
-    private AccountManager() { }
+    private AccountManager() {
+    }
     public static AccountManager getInstance() {
         if (instance == null) {
             instance = new AccountManager();

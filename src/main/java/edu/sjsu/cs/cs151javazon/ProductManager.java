@@ -6,7 +6,8 @@ public class ProductManager {
     private static ProductManager instance;
     private final String textFile = "Products.txt";
     private final ArrayList<Product> products = new ArrayList<>();
-    private ProductManager() { }
+    private ProductManager() {
+    }
     public static ProductManager getInstance() {
         if (instance == null) {
             instance = new ProductManager();

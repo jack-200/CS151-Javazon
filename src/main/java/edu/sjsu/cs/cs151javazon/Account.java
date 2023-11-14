@@ -12,18 +12,6 @@ public class Account implements Serializable {
     private String address;
     private String paymentMethod;
     private userRoles role;
-    //    public Account(String firstName, String lastName, String email, String userName, String password, String
-    //    address, String paymentMethod, userRoles role) {
-    //        setFirstName(firstName);
-    //        setLastName(lastName);
-    //        setEmail(email);
-    //        setUserName(userName);
-    //        setPassword(password);
-    //        // Part 2
-    //        setAddress(address);
-    //        setPaymentMethod(paymentMethod);
-    //        setRole(role);
-    //    }
     public Account() { }
     public Account(String firstName, String lastName, String email, String userName, String password) {
         setFirstName(firstName);
@@ -33,9 +21,7 @@ public class Account implements Serializable {
         setPassword(password);
     }
     public static Account getInstance() {
-        if (instance == null) {
-            return null;
-        }
+        if (instance == null) { return null; }
         return instance;
     }
     public static Account getInstance(String firstName, String lastName, String email, String userName,
