@@ -84,7 +84,6 @@ public class AccountController {
     }
 
     @FXML
-<<<<<<< HEAD
     protected void onSignUpSaveClick() throws IOException {
         if (address.getText().isEmpty()) {
             System.out.println("Fill out address");
@@ -99,20 +98,6 @@ public class AccountController {
             FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("hello-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             Javazon.getStage().setScene(scene);
-=======
-    protected void onSignInClick(){ //Sample run: Username:ykk Password:qWert#456
-        if(!username.getText().isEmpty() && !password.getText().isEmpty()){
-                Account account = AccountManager.getInstance().searchAccount(username.getText());
-                if(account == null){
-                    System.out.println("Account does not exist");
-                }
-                else if (password.getText().equals(account.getPassword())) {
-                    System.out.println("signed in");
-                }
-                else{
-                    System.out.println("Username and password do not match");
-                }
->>>>>>> a43e21dcaeddd37e76b4f0a8a5151188c2017cf3
         }
 
     }
