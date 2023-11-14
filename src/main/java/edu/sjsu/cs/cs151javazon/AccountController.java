@@ -30,23 +30,22 @@ public class AccountController {
     private Hyperlink DontHaveAccount, HaveAccount;
     @FXML
     private Button buyer, seller;
-
     @FXML
     protected void onBuyerClick() {
     }
-
     @FXML
     protected void onSellerClick() {
     }
-
     @FXML
     protected void onSignUpClick() throws PasswordException {
-        if (!firstname.getText().isEmpty() && !lastname.getText().isEmpty() && !email.getText().isEmpty() && !username.getText().isEmpty()) {
+        if (!firstname.getText().isEmpty() && !lastname.getText().isEmpty() && !email.getText().isEmpty() &&
+            !username.getText().isEmpty()) {
             if (Account.getInstance() == null) {
                 try {
                     checkPassword(password.getText());
                     if (AccountManager.getInstance().searchAccount(username.getText()) == null) {
-                        Account account = Account.getInstance(firstname.getText(), lastname.getText(), email.getText(), username.getText(), password.getText());
+                        Account account = Account.getInstance(firstname.getText(), lastname.getText(), email.getText(),
+                                username.getText(), password.getText());
                         current = account;
                         accounts.add(account);
                         AccountManager.getInstance().loadAccount(accounts);
@@ -57,11 +56,9 @@ public class AccountController {
                         FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("signUp-finish.fxml"));
                         Scene scene = new Scene(fxmlLoader.load());
                         Javazon.getStage().setScene(scene);
-
                     } else {
                         System.out.println("cant create acc");
                     }
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (UpperCaseCharacterMissing e) {
@@ -82,62 +79,11 @@ public class AccountController {
             System.out.println("Fill out all text fields");
         }
     }
-
-    @FXML
-    protected void onSignUpSaveClick() throws IOException {
-        if (address.getText().isEmpty()) {
-            System.out.println("Fill out address");
-        } else {
-            current.setAddress(address.getText());
-            if (buyer.isPressed()) {
-                current.setRole(Account.userRoles.BUYER);
-            } else {
-                current.setRole(Account.userRoles.SELLER);
-            }
-
-            FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("hello-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load());
-            Javazon.getStage().setScene(scene);
-        }
-
-    }
-
-    @FXML
-    protected void onSignInClick() {
-        if (!username.getText().isEmpty() && !password.getText().isEmpty()) {
-            Account account = AccountManager.getInstance().searchAccount(username.getText());
-            if (account == null) {
-                System.out.println("Account does not exist");
-            } else if (password.getText().equals(account.getPassword())) {
-                System.out.println("signed in");
-            } else {
-                System.out.println("Username and password do not match");
-            }
-        } else {
-            System.out.println("Fill out all text fields");
-        }
-    }
-
-    @FXML
-    protected void onDontHaveAccountClick() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("signUp.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        Javazon.getStage().setScene(scene);
-    }
-
-    @FXML
-    protected void onHaveAccountClick() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("signIn.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        Javazon.getStage().setScene(scene);
-    }
-
     public void checkPassword(String password) throws PasswordException {
         boolean uppercase = false;
         boolean lowercase = false;
         boolean specialChar = false;
         boolean numberChar = false;
-
         for (int i = 0; i < password.length(); i++) {
             if (Character.isUpperCase(password.charAt(i))) {
                 uppercase = true;
@@ -152,7 +98,6 @@ public class AccountController {
                 numberChar = true;
             }
         }
-
         if (!uppercase) {
             uppercaseReq.setFill(Color.RED);
             throw new UpperCaseCharacterMissing("UpperCaseCharacterMissing");
@@ -188,6 +133,49 @@ public class AccountController {
         if (password.length() >= 8) {
             lengthReq.setFill(Color.GREEN);
         }
+    }
+    @FXML
+    protected void onSignUpSaveClick() throws IOException {
+        if (address.getText().isEmpty()) {
+            System.out.println("Fill out address");
+        } else {
+            current.setAddress(address.getText());
+            if (buyer.isPressed()) {
+                current.setRole(Account.userRoles.BUYER);
+            } else {
+                current.setRole(Account.userRoles.SELLER);
+            }
+            FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("hello-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            Javazon.getStage().setScene(scene);
+        }
+    }
+    @FXML
+    protected void onSignInClick() {
+        if (!username.getText().isEmpty() && !password.getText().isEmpty()) {
+            Account account = AccountManager.getInstance().searchAccount(username.getText());
+            if (account == null) {
+                System.out.println("Account does not exist");
+            } else if (password.getText().equals(account.getPassword())) {
+                System.out.println("signed in");
+            } else {
+                System.out.println("Username and password do not match");
+            }
+        } else {
+            System.out.println("Fill out all text fields");
+        }
+    }
+    @FXML
+    protected void onDontHaveAccountClick() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("signUp.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        Javazon.getStage().setScene(scene);
+    }
+    @FXML
+    protected void onHaveAccountClick() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("signIn.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        Javazon.getStage().setScene(scene);
     }
 }
 

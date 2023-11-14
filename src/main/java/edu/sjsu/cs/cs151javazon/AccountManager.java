@@ -8,27 +8,22 @@ public class AccountManager implements Serializable {
     public static int numUsers;
     private static AccountManager instance;
     private ArrayList<Account> accounts = new ArrayList<>();
-
     private AccountManager() {
     }
-
     public static AccountManager getInstance() {
         if (instance == null) {
             instance = new AccountManager();
         }
         return instance;
     }
-
     // load new account to ArrayList
     public void loadAccount(ArrayList<Account> accounts) {
         this.accounts = accounts;
     }
-
     //load all accounts
     public void loadAccounts() {
         accounts = deserializeArrList(textFile);
     }
-
     public ArrayList<Account> deserializeArrList(String file) {
         ArrayList<Account> accounts;
         try {
@@ -45,12 +40,10 @@ public class AccountManager implements Serializable {
             throw new RuntimeException(e);
         }
     }
-
     public ArrayList<Account> addAccount(Account a) {
         accounts.add(a);
         return accounts;
     }
-
     public Account searchAccount(String username) {
         for (Account account : accounts) {
             if (account.getUserName().equals(username)) {
