@@ -1,4 +1,4 @@
-package edu.sjsu.cs.cs151javazon;
+package edu.sjsu.cs.cs151javazon.exceptions;
 
 public class PasswordException extends Exception {
     public PasswordException() {
