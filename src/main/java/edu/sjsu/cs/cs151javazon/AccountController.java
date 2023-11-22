@@ -1,5 +1,6 @@
 package edu.sjsu.cs.cs151javazon;
 
+import edu.sjsu.cs.cs151javazon.exceptions.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -53,7 +54,7 @@ public class AccountController {
                         ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
                         out.writeObject(accounts);
                         System.out.println("acc created!");
-                        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("signUp-finish.fxml"));
+                        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("SignUpFinish.fxml"));
                         Scene scene = new Scene(fxmlLoader.load());
                         Javazon.getStage().setScene(scene);
                     } else {
@@ -167,13 +168,13 @@ public class AccountController {
     }
     @FXML
     protected void onDontHaveAccountClick() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("signUp.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("SignUp.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Javazon.getStage().setScene(scene);
     }
     @FXML
     protected void onHaveAccountClick() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("signIn.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("SignIn.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Javazon.getStage().setScene(scene);
     }
