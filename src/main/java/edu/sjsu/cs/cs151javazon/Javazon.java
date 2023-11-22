@@ -28,11 +28,11 @@ public class Javazon extends Application {
         Javazon = stage;
         //        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("hello-view.fxml"));
         //        Scene scene = new Scene(fxmlLoader.load(), 500, 500);
+// Test sellProduct.fxml
         FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("sellProduct.fxml"));
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         scrollPane.setPrefViewportHeight(450);
-
         VBox vBox = new VBox();
         vBox.getChildren().addAll((Pane)fxmlLoader.load());
         scrollPane.setContent(vBox);

@@ -27,15 +27,12 @@ public class SellProductController
     static  FXMLLoader currentScene = null;
     ArrayList<Product> products = ProductManager.getInstance().deserializeArrList(textFile);
 
-
     @FXML
-    public TextField name, price, link;
+    public TextField name, price, url;
     @FXML
     private TextArea description;
     @FXML
     private Button AddItem;
-    @FXML
-    private Hyperlink uploadPhoto;
     @FXML
     private ImageView imageView;
     @FXML
@@ -46,13 +43,19 @@ public class SellProductController
     Button button = new Button("Add");
     @FXML
     public void addProduct() throws IOException{
-        setters(name, price, link, description, imageView);
+        setters(name, price, url, description, imageView);
 
+        if (!name.getText().isEmpty() && quantity != null && !price.getText().isEmpty() && !url.getText().isEmpty() && !description.getText().isEmpty()){
+            boolean validPrice = true;
+            try{
+                Double.parseDouble(price.getText());
+            }catch(NumberFormatException e) {
+                validPrice = false;
+            }
 
-        if (!name.getText().isEmpty() && !price.getText().isEmpty() && !link.getText().isEmpty() && !description.getText().isEmpty()){
-            if (Product.getInstance() == null) {
-                Product product = new Product(name.getText(),Integer.parseInt(quantity.getText()),Double.parseDouble(price.getText()),description.getText(),link.getText());
-
+            if (Product.getInstance() == null && validPrice) {
+                Product product = new Product(name.getText(),Integer.parseInt(quantity.getText()),Double.parseDouble(price.getText()),description.getText(),url.getText());
+                System.out.println(url.getText());
                 current = product;
                 products.add(product);
                 ProductManager.getInstance().loadProduct(products);
@@ -62,54 +65,50 @@ public class SellProductController
                 System.out.println("product added");
                 System.out.println("Total number of products:" + products.size());
 
-                //resetTextFields();
+                // update vbox that is inside scroll pane
+                FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("sellProduct.fxml"));
+                ScrollPane sc = (ScrollPane) Javazon.getStage().getScene().getRoot();
+                VBox vbox = (VBox) sc.getContent();
+                vbox.getChildren().addAll((Pane)fxmlLoader.load());
+            }
+            else{
+                System.out.println("Enter valid price");
             }
         }
         else{
             System.out.println("Fill out all text fields");
         }
-            FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("sellProduct.fxml"));
-            SellProductController controller = fxmlLoader.getController();
-
-            ScrollPane sc = (ScrollPane) Javazon.getStage().getScene().getRoot();
-            VBox vbox = (VBox) sc.getContent();
-            vbox.getChildren().addAll((Pane)fxmlLoader.load());
-
-
     }
-    //   https://m.media-amazon.com/images/I/61qAtEWZTNL._AC_SX522_.jpg
+
     @FXML
     protected void onAddImageClick(){
-        if(!link.getText().isEmpty()){
-            Image image = new Image(link.getText());
+        if(!url.getText().isEmpty()){
+            Image image = new Image(url.getText());
             imageView.setImage(image);
         }
     }
-    public void setters(TextField name, TextField price, TextField link, TextArea description, ImageView imageView){
+    public void setters(TextField name, TextField price, TextField url, TextArea description, ImageView imageView){
         this.name = name;
         this.price = price;
-        this.link = link;
+        this.url = url;
         this.description = description;
         this.imageView = imageView;
 
     }
-    public void resetTextFields(){
-        this.name.clear();
-        this.price.clear();
-        this.link.clear();
-        this.description.clear();
-        resetImageView();
 
-    }
-    public void resetImageView(){
-        Image image = new Image("https://imgs.search.brave.com/JHZ_N_4PEASRhUZmrd48lE5lPuEt5ygYRAJdwIkJOJ4/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudGhlbm91bnBy/b2plY3QuY29tL3Bu/Zy81Njk4ODA1LTIw/MC5wbmc");
-        imageView.setImage(image);
-
-    }
     @FXML
     protected void onMenuItemClick(ActionEvent event){
         quantity = (MenuItem) event.getSource();
         menuButton.setText(quantity.getText());
+    }
+    @FXML
+    protected void onExitClick() throws IOException {
+        // show main product page with new products if added
+        FXMLLoader fxmlLoader1 = new FXMLLoader(Javazon.class.getResource("hello-view.fxml"));
+        Scene scene1 = new Scene(fxmlLoader1.load());
+        Javazon.getStage().setScene(scene1);
+        Javazon.getStage().show();
+
     }
 
 }
