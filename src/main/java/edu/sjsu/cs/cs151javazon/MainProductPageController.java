@@ -18,8 +18,9 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 
+import static edu.sjsu.cs.cs151javazon.ProductManager.textFile;
+
 public class MainProductPageController {
-    public static final String textFile = "src/main/resources/edu/sjsu/cs/cs151javazon/Products.txt";
     private static final double COLUMN_WIDTH = 200;
     private static final double GAP = 10;
     @FXML
