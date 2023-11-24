@@ -3,6 +3,9 @@ package edu.sjsu.cs.cs151javazon;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -20,13 +23,26 @@ public class Javazon extends Application {
     public static Stage getStage() {
         return Javazon;
     }
+    public static void switchScene(String sceneName) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource(sceneName));
+        Scene scene = new Scene(fxmlLoader.load(), 600, 600);
+        Javazon.setScene(scene);
+        //Javazon.show();
+    }
     @Override
     public void start(Stage stage) throws IOException {
         Javazon = stage;
-        //        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("hello-view.fxml"));
+        //        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("SignUp.fxml"));
         //        Scene scene = new Scene(fxmlLoader.load(), 500, 500);
-        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("signUp.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
+        // Test sellProduct.fxml
+        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("sellProduct.fxml"));
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        scrollPane.setPrefViewportHeight(450);
+        VBox vBox = new VBox();
+        vBox.getChildren().addAll((Pane) fxmlLoader.load());
+        scrollPane.setContent(vBox);
+        Scene scene = new Scene(scrollPane);
         stage.setTitle("Javazon");
         stage.setScene(scene);
         stage.show();

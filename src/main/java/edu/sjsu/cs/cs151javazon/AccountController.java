@@ -2,8 +2,6 @@ package edu.sjsu.cs.cs151javazon;
 
 import edu.sjsu.cs.cs151javazon.exceptions.*;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -54,9 +52,7 @@ public class AccountController {
                         ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
                         out.writeObject(accounts);
                         System.out.println("acc created!");
-                        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("SignUpFinish.fxml"));
-                        Scene scene = new Scene(fxmlLoader.load());
-                        Javazon.getStage().setScene(scene);
+                        Javazon.switchScene("SignUpFinish.fxml");
                     } else {
                         System.out.println("cant create acc");
                     }
@@ -146,19 +142,18 @@ public class AccountController {
             } else {
                 current.setRole(Account.userRoles.SELLER);
             }
-            FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("hello-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load());
-            Javazon.getStage().setScene(scene);
+            Javazon.switchScene("hello-view.fxml");
         }
     }
     @FXML
-    protected void onSignInClick() {
+    protected void onSignInClick() throws IOException {
         if (!username.getText().isEmpty() && !password.getText().isEmpty()) {
             Account account = AccountManager.getInstance().searchAccount(username.getText());
             if (account == null) {
                 System.out.println("Account does not exist");
             } else if (password.getText().equals(account.getPassword())) {
                 System.out.println("signed in");
+                Javazon.switchScene("hello-view.fxml");
             } else {
                 System.out.println("Username and password do not match");
             }
@@ -168,15 +163,11 @@ public class AccountController {
     }
     @FXML
     protected void onDontHaveAccountClick() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("SignUp.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        Javazon.getStage().setScene(scene);
+        Javazon.switchScene("SignUp.fxml");
     }
     @FXML
     protected void onHaveAccountClick() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("SignIn.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        Javazon.getStage().setScene(scene);
+        Javazon.switchScene("SignIn.fxml");
     }
 }
 
