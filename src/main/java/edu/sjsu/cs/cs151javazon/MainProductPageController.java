@@ -46,45 +46,6 @@ public class MainProductPageController {
         updateGrid(primaryStage.getWidth());
         return scrollPane;
     }
-    //    private void updateGrid(double stageWidth) {
-    //        int colCount = (int) (stageWidth / COLUMN_WIDTH);
-    //        gridPane.getChildren().clear();
-    //        gridPane.getColumnConstraints().clear();
-    //        Button clickableButton1 = new Button("Button 1");
-    //        clickableButton1.setOnAction(e -> {
-    //            System.out.println("Button 1 clicked");
-    //        });
-    //        Button clickableButton2 = new Button("Button 2");
-    //        clickableButton2.setOnAction(e -> {
-    //            System.out.println("Button 2 clicked");
-    //        });
-    //        gridPane.add(clickableButton1, 0, 0);
-    //        gridPane.add(clickableButton2, 1, 0);
-    //        for (int i = 0; i < colCount; i++) {
-    //            ColumnConstraints column = new ColumnConstraints(COLUMN_WIDTH);
-    //            gridPane.getColumnConstraints().add(column);
-    //        }
-    //        int row = 1, col = 0;
-    //        for (File fileEntry : Objects.requireNonNull(folder.listFiles())) {
-    //            if (fileEntry.isFile()) {
-    //                Image image = new Image(fileEntry.toURI().toString());
-    //                ImageView imageView = new ImageView(image);
-    //                imageView.setFitWidth(COLUMN_WIDTH);
-    //                imageView.setFitHeight(COLUMN_WIDTH);
-    //                gridPane.add(imageView, col, row);
-    //                gridPane.add(new Label(fileEntry.getName()), col, row + 1);
-    //                col++;
-    //                if (col == colCount) {
-    //                    col = 0;
-    //                    row += 2;
-    //                }
-    //            }
-    //        }
-    //        Product p = new Product();
-    //        updateGrid(p);
-    //    }
-    // need to add profile icon, + icon to load sellProduct.fxml, shopping cart icon, and the search bar near the top
-    // of gridpane
     private void updateGrid(double stageWidth) {
         int colCount = (int) (stageWidth / COLUMN_WIDTH);
         gridPane.getChildren().clear();
