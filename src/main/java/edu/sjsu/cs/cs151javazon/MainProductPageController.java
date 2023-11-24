@@ -1,8 +1,13 @@
 package edu.sjsu.cs.cs151javazon;
 
 import javafx.beans.value.ChangeListener;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -11,10 +16,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 public class MainProductPageController {
     public static final String textFile = "src/main/resources/edu/sjsu/cs/cs151javazon/Products.txt";
@@ -22,6 +31,8 @@ public class MainProductPageController {
     private static final double GAP = 10;
     private final GridPane gridPane = new GridPane(GAP, GAP);
     private final File folder = new File("src/main/resources/images");
+    @FXML
+    public static Label static_label;
     private static MainProductPageController instance;
     public static MainProductPageController getInstance() {
         if (instance == null) {
@@ -80,7 +91,7 @@ public class MainProductPageController {
 //        updateGrid(p);
 //    }
 
-    // need to add profile, + icon to load sellProduct.fxml, shopping cart icon, and the search bar near the top of gridpane
+    // need to add profile icon, + icon to load sellProduct.fxml, shopping cart icon, and the search bar near the top of gridpane
     private void updateGrid(double stageWidth) {
         int colCount = (int) (stageWidth / COLUMN_WIDTH);
         gridPane.getChildren().clear();
@@ -112,8 +123,12 @@ public class MainProductPageController {
                 Hyperlink productLink = new Hyperlink(product.getName());
                 gridPane.add(productLink, col, row + 1);
                 productLink.setOnAction(e -> {
-                    // transition to clicked product's info page
-                    // product info page(scene) should be created by the time product() is called.
+                    try {
+                        product.createProductPage();
+                        Scene productPage = product.getProductPage();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 });
                 col++;
                 if (col == colCount) {
@@ -127,5 +142,4 @@ public class MainProductPageController {
         }
 
     }
-
 }

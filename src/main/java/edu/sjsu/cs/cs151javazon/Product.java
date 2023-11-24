@@ -1,9 +1,22 @@
 package edu.sjsu.cs.cs151javazon;
 
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.ResourceBundle;
 
 public class Product implements Serializable {
     private static final long serialVersionUID = 8248061374072736483L;
@@ -12,8 +25,11 @@ public class Product implements Serializable {
     private double price, rating;
     private int quantity;
     private ArrayList<Review> reviews;
+    @FXML
+    private Scene productPage;
+
     public Product() { System.out.println("Product()"); }
-    public Product(String name, int quantity, double price, String description, String url) {
+    public Product(String name, int quantity, double price, String description, String url) throws IOException {
         setName(name);
         setQuantity(quantity);
         setPrice(price);
@@ -37,6 +53,41 @@ public class Product implements Serializable {
     public ArrayList<Review> getReviews() { return reviews; }
     public void setReviews(ArrayList<Review> reviews) { this.reviews = reviews; }
 
+    @FXML
+    public void createProductPage() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("IndividualProductPage.fxml"));
+        Parent root = fxmlLoader.load();
+        ProductPageController controller = fxmlLoader.getController();
+        if(controller.getName() != null){
+            controller.getName().setText(name);
+            controller.getPrice().setText(Double.toString(price));
+            controller.getDescription().setText(description);
+            Image image = new Image(url);
+            controller.getImageView().setImage(image);
+            controller.getStock().setText("In Stock");
+            controller.getBuyNow().setOnAction(e -> {
+                if(controller.getIsGift().isSelected()){
+                    // set new address
+                }
+                try {
+                    Javazon.switchScene("Checkout.fxml");
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+            controller.getAddToCart().setOnAction(e -> {
+                //transition to shopping cart scene
+            });
+
+        }
+        else{
+            System.out.println("Cannot create product page");
+        }
+        productPage = new Scene(root);
+        Javazon.getStage().setScene(productPage);
+    }
+    @FXML
+    public Scene getProductPage(){ return productPage; }
 
     public void calculateRating() {
         double sum = 0;

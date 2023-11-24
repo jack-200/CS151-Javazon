@@ -7,7 +7,6 @@ public class ProductManager implements Serializable {
     public static final String textFile = "src/main/resources/edu/sjsu/cs/cs151javazon/Products.txt";
     public static int numProducts;
 
-
     private static ProductManager instance;
     private ArrayList<Product> products = new ArrayList<>();
     private ProductManager() {
@@ -25,6 +24,7 @@ public class ProductManager implements Serializable {
     public ArrayList<Product> deserializeArrList(String file) {
         ArrayList<Product> products;
         try {
+//            System.out.println("deserialized");
             FileInputStream fileInputStream = new FileInputStream(file);
             ObjectInputStream in = new ObjectInputStream(fileInputStream);
             products = (ArrayList<Product>) in.readObject(); // fix

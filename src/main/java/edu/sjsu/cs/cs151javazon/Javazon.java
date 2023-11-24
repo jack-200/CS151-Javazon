@@ -23,11 +23,20 @@ public class Javazon extends Application {
     public static Stage getStage() {
         return Javazon;
     }
+    public static void switchScene(String sceneName) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource(sceneName));
+        Scene scene = new Scene(fxmlLoader.load(),600,600);
+        Javazon.setScene(scene);
+        //Javazon.show();
+
+    }
     @Override
     public void start(Stage stage) throws IOException {
         Javazon = stage;
-        //        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("hello-view.fxml"));
-        //        Scene scene = new Scene(fxmlLoader.load(), 500, 500);
+//        FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("SignUp.fxml"));
+//        Scene scene = new Scene(fxmlLoader.load(), 500, 500);
+
+
 // Test sellProduct.fxml
         FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("sellProduct.fxml"));
         ScrollPane scrollPane = new ScrollPane();
@@ -37,6 +46,7 @@ public class Javazon extends Application {
         vBox.getChildren().addAll((Pane)fxmlLoader.load());
         scrollPane.setContent(vBox);
         Scene scene = new Scene(scrollPane);
+
 
         stage.setTitle("Javazon");
         stage.setScene(scene);

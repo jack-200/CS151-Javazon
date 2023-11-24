@@ -39,8 +39,13 @@ public class SellProductController
     private MenuButton menuButton;
     @FXML
     private MenuItem quantity;
-
-    Button button = new Button("Add");
+    public void setters(TextField name, TextField price, TextField url, TextArea description, ImageView imageView){
+        this.name = name;
+        this.price = price;
+        this.url = url;
+        this.description = description;
+        this.imageView = imageView;
+    }
     @FXML
     public void addProduct() throws IOException{
         setters(name, price, url, description, imageView);
@@ -55,8 +60,8 @@ public class SellProductController
 
             if (Product.getInstance() == null && validPrice) {
                 Product product = new Product(name.getText(),Integer.parseInt(quantity.getText()),Double.parseDouble(price.getText()),description.getText(),url.getText());
-                System.out.println(url.getText());
                 current = product;
+                // serialize
                 products.add(product);
                 ProductManager.getInstance().loadProduct(products);
                 FileOutputStream fileOutputStream = new FileOutputStream(textFile);
@@ -70,6 +75,7 @@ public class SellProductController
                 ScrollPane sc = (ScrollPane) Javazon.getStage().getScene().getRoot();
                 VBox vbox = (VBox) sc.getContent();
                 vbox.getChildren().addAll((Pane)fxmlLoader.load());
+
             }
             else{
                 System.out.println("Enter valid price");
@@ -87,14 +93,6 @@ public class SellProductController
             imageView.setImage(image);
         }
     }
-    public void setters(TextField name, TextField price, TextField url, TextArea description, ImageView imageView){
-        this.name = name;
-        this.price = price;
-        this.url = url;
-        this.description = description;
-        this.imageView = imageView;
-
-    }
 
     @FXML
     protected void onMenuItemClick(ActionEvent event){
@@ -104,10 +102,7 @@ public class SellProductController
     @FXML
     protected void onExitClick() throws IOException {
         // show main product page with new products if added
-        FXMLLoader fxmlLoader1 = new FXMLLoader(Javazon.class.getResource("hello-view.fxml"));
-        Scene scene1 = new Scene(fxmlLoader1.load());
-        Javazon.getStage().setScene(scene1);
-        Javazon.getStage().show();
+        Javazon.switchScene("hello-view.fxml");
 
     }
 
