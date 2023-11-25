@@ -16,6 +16,6 @@ public class HelloController {
         Scene currentScene = currentStage.getScene();
         double adjustedWidth = currentStage.getWidth() - (currentStage.getWidth() - currentScene.getWidth());
         double adjustedHeight = currentStage.getHeight() - (currentStage.getHeight() - currentScene.getHeight());
-        currentStage.setScene(new Scene(root, adjustedWidth + 1e-4, adjustedHeight));
+        currentStage.setScene(new Scene(root, adjustedWidth, adjustedHeight));
     }
 }

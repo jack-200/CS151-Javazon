@@ -5,17 +5,12 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
 
 import static edu.sjsu.cs.cs151javazon.ProductManager.textFile;
@@ -23,11 +18,11 @@ import static edu.sjsu.cs.cs151javazon.ProductManager.textFile;
 public class MainProductPageController {
     private static final double COLUMN_WIDTH = 200;
     private static final double GAP = 10;
+    private static final String img_path = "file:src/main/resources/images/";
     @FXML
     public static Label static_label;
     private static MainProductPageController instance;
     private final GridPane gridPane = new GridPane(GAP, GAP);
-    private final File folder = new File("src/main/resources/images");
     public static MainProductPageController getInstance() {
         if (instance == null) {
             instance = new MainProductPageController();
@@ -35,31 +30,55 @@ public class MainProductPageController {
         return instance;
     }
     public Parent getRoot(Stage primaryStage) {
-        gridPane.setPadding(new Insets(10));
-        ScrollPane scrollPane = new ScrollPane(gridPane);
+        StackPane header = generateHeader();
+        VBox vbox = new VBox();
+        vbox.getChildren().addAll(header, gridPane);
+        vbox.setSpacing(20);
+        ScrollPane scrollPane = new ScrollPane(vbox);
         scrollPane.setFitToWidth(true);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
-            updateGrid(primaryStage.getWidth());
+            generateProductGrid(primaryStage.getWidth());
         };
         primaryStage.widthProperty().addListener(stageSizeListener);
-        updateGrid(primaryStage.getWidth());
+        generateProductGrid(primaryStage.getWidth());
         return scrollPane;
     }
-    private void updateGrid(double stageWidth) {
+    private StackPane generateHeader() {
+        int searchFeatHeight = 30;
+        ImageView logoImage = new ImageView(new Image(
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/100px-Amazon_logo.svg.png"));
+        TextField searchBar = new TextField();
+        searchBar.setPrefHeight(searchFeatHeight);
+        Button searchIcon = generateSearchIcon(searchFeatHeight, searchBar);
+        Button sell_product_button = createButton("Sell Product", () -> {
+            try {
+                Javazon.switchScene("sellProduct.fxml");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        Button sign_in_button = createButton("Sign In", () -> {
+            try {
+                Javazon.switchScene("SignIn.fxml");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        Button cart_button = createButton("Cart", () -> System.out.println("Cart Button clicked"));
+        HBox hbox = new HBox();
+        hbox.setSpacing(10);
+        hbox.setPadding(new Insets(10));
+        hbox.getChildren().addAll(logoImage, searchBar, searchIcon, sell_product_button, sign_in_button, cart_button);
+        StackPane stackPane = new StackPane(hbox);
+        stackPane.setStyle("-fx-background-color: #00ffff;");
+        return stackPane;
+    }
+    private void generateProductGrid(double stageWidth) {
         int colCount = (int) (stageWidth / COLUMN_WIDTH);
+        gridPane.setPadding(new Insets(10));
         gridPane.getChildren().clear();
         gridPane.getColumnConstraints().clear();
-        Button clickableButton1 = new Button("Button 1");
-        clickableButton1.setOnAction(e -> {
-            System.out.println("Button 1 clicked");
-        });
-        Button clickableButton2 = new Button("Button 2");
-        clickableButton2.setOnAction(e -> {
-            System.out.println("Button 2 clicked");
-        });
-        gridPane.add(clickableButton1, 0, 0);
-        gridPane.add(clickableButton2, 1, 0);
         for (int i = 0; i < colCount; i++) {
             ColumnConstraints column = new ColumnConstraints(COLUMN_WIDTH);
             gridPane.getColumnConstraints().add(column);
@@ -92,5 +111,23 @@ public class MainProductPageController {
                 System.out.println("null pointer");
             }
         }
+    }
+    private static Button generateSearchIcon(int searchFeatHeight, TextField searchBar) {
+        Button searchIcon = new Button();
+        searchIcon.setStyle("-fx-padding: 3;");
+        ImageView mgiImg = new ImageView(new Image((img_path + "200px-Magnifying_glass_icon.png")));
+        mgiImg.setFitHeight(searchFeatHeight - 6);
+        mgiImg.setPreserveRatio(true);
+        searchIcon.setGraphic(mgiImg);
+        searchIcon.setOnAction(e -> {
+            String enteredText = searchBar.getText();
+            System.out.println("Entered Text: " + enteredText);
+        });
+        return searchIcon;
+    }
+    private Button createButton(String label, Runnable action) {
+        Button button = new Button(label);
+        button.setOnAction(e -> action.run());
+        return button;
     }
 }
