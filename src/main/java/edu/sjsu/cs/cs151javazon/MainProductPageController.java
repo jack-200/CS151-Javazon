@@ -114,11 +114,11 @@ public class MainProductPageController {
     }
     private static Button generateSearchIcon(int searchFeatHeight, TextField searchBar) {
         Button searchIcon = new Button();
-        searchIcon.setStyle("-fx-padding: 3;");
-        ImageView mgiImg = new ImageView(new Image((img_path + "200px-Magnifying_glass_icon.png")));
-        mgiImg.setFitHeight(searchFeatHeight - 6);
-        mgiImg.setPreserveRatio(true);
-        searchIcon.setGraphic(mgiImg);
+        searchIcon.setPadding(new Insets(3));
+        ImageView search_img = new ImageView(new Image((img_path + "200px-Magnifying_glass_icon.png")));
+        search_img.setPreserveRatio(true);
+        search_img.setFitHeight(searchFeatHeight - searchIcon.getPadding().getTop() * 2);
+        searchIcon.setGraphic(search_img);
         searchIcon.setOnAction(e -> {
             String enteredText = searchBar.getText();
             System.out.println("Entered Text: " + enteredText);
