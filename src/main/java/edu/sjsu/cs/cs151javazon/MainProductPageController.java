@@ -96,7 +96,7 @@ public class MainProductPageController {
         });
         Button cart_button = createButton("Cart", () -> System.out.println("Cart Button clicked"));
         if (AccountController.current != null && AccountController.current.getStatus() == Account.Status.SIGNED_IN) {
-            sign_in_button.setText("Hello," + AccountController.current.getFirstName() + "\nAccount");
+            sign_in_button.setText("Hello, " + AccountController.current.getFirstName() + "\nAccount");
         }
         Button myMarket_button = createButton("My Market", () -> {
             if (AccountController.current != null &&
