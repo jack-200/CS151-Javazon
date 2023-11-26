@@ -53,6 +53,12 @@ public class SellProductController {
                 FileOutputStream fileOutputStream = new FileOutputStream(textFile);
                 ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
                 out.writeObject(products);
+                // serialize
+                AccountController.current.addToMyMarket(product);
+                AccountController.current.loadProduct(AccountController.current.getMyMarket());
+                FileOutputStream fileOutputStream1 = new FileOutputStream(AccountController.current.getMyMarketFile());
+                ObjectOutputStream out1 = new ObjectOutputStream(fileOutputStream1);
+                out1.writeObject(AccountController.current.getMyMarket());
                 System.out.println("product added");
                 System.out.println("Total number of products:" + products.size());
                 // update vbox that is inside scroll pane

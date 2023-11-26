@@ -70,21 +70,22 @@ public class Product implements Serializable {
     }
     @FXML
     public Scene getProductPage() { return productPage; }
-    @Override
-    public String toString() { return getDescription() + ", " + getPrice() + ", " + getRating() + ", " + getReviews(); }
+    //    @Override
+    //    public String toString() { return getDescription() + ", " + getPrice() + ", " + getRating() + ", " +
+    //    getReviews(); }
     public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
     public double getPrice() { return price; }
     public void setPrice(double price) { this.price = price; }
     public double getRating() {
         calculateRating();
         return rating;
     }
-    public ArrayList<Review> getReviews() { return reviews; }
-    public void setReviews(ArrayList<Review> reviews) { this.reviews = reviews; }
     public void calculateRating() {
         double sum = 0;
         for (Review review : reviews) { sum += review.getStars(); }
         rating = sum / reviews.size();
     }
-    public void setDescription(String description) { this.description = description; }
+    public ArrayList<Review> getReviews() { return reviews; }
+    public void setReviews(ArrayList<Review> reviews) { this.reviews = reviews; }
 }

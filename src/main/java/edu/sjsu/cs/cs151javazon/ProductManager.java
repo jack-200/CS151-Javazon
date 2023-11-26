@@ -23,7 +23,6 @@ public class ProductManager implements Serializable {
     public ArrayList<Product> deserializeArrList(String file) {
         ArrayList<Product> products;
         try {
-            //            System.out.println("deserialized");
             FileInputStream fileInputStream = new FileInputStream(file);
             ObjectInputStream in = new ObjectInputStream(fileInputStream);
             products = (ArrayList<Product>) in.readObject(); // fix

@@ -19,6 +19,7 @@ import static edu.sjsu.cs.cs151javazon.AccountManager.textFile;
 public class AccountController {
     static Account current = null;
     ArrayList<Account> accounts = AccountManager.getInstance().deserializeArrList(textFile);
+    //ArrayList<Product> myMarket = AccountManager.getInstance().deserializeArrList(current.getMyMarket());
     @FXML
     private Label FirstNameLabel, LastNameLabel, EmailLabel, UsernameLabel, PasswordLabel, AddressLabel;
     @FXML
@@ -28,7 +29,8 @@ public class AccountController {
     @FXML
     private Hyperlink DontHaveAccount, HaveAccount;
     @FXML
-    private Button buyer, seller;
+    private Button buyer, seller, goBack;
+    public AccountController() throws IOException, ClassNotFoundException { }
     @FXML
     protected void onBuyerClick() {
     }
@@ -142,6 +144,7 @@ public class AccountController {
             } else {
                 current.setRole(Account.userRoles.SELLER);
             }
+            current.setStatus(Account.Status.SIGNED_IN);
             Javazon.switchScene("hello-view.fxml");
         }
     }
@@ -153,6 +156,9 @@ public class AccountController {
                 System.out.println("Account does not exist");
             } else if (password.getText().equals(account.getPassword())) {
                 System.out.println("signed in");
+                account.setStatus(Account.Status.SIGNED_IN);
+                current = account;
+                //MainProductPageController.getInstance().getSignInButton().setText("user's name");
                 Javazon.switchScene("hello-view.fxml");
             } else {
                 System.out.println("Username and password do not match");
@@ -168,6 +174,10 @@ public class AccountController {
     @FXML
     protected void onHaveAccountClick() throws IOException {
         Javazon.switchScene("SignIn.fxml");
+    }
+    @FXML
+    protected void onGoBackClick() throws IOException {
+        Javazon.switchScene("hello-view.fxml");
     }
 }
 
