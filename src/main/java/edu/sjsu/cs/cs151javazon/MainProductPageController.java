@@ -2,16 +2,22 @@ package edu.sjsu.cs.cs151javazon;
 
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static edu.sjsu.cs.cs151javazon.ProductManager.textFile;
 
@@ -19,10 +25,10 @@ public class MainProductPageController {
     private static final double COLUMN_WIDTH = 200;
     private static final double GAP = 10;
     private static final String img_path = "file:src/main/resources/images/";
-    @FXML
-    public static Label static_label;
     private static MainProductPageController instance;
     private final GridPane gridPane = new GridPane(GAP, GAP);
+    @FXML
+    private Button sign_in_button;
     public static MainProductPageController getInstance() {
         if (instance == null) {
             instance = new MainProductPageController();
@@ -51,25 +57,84 @@ public class MainProductPageController {
         TextField searchBar = new TextField();
         searchBar.setPrefHeight(searchFeatHeight);
         Button searchIcon = generateSearchIcon(searchFeatHeight, searchBar);
+        //Account hyerlink
+        Button account_button = createButton("Account", () -> {
+        });
         Button sell_product_button = createButton("Sell Product", () -> {
             try {
-                Javazon.switchScene("sellProduct.fxml");
+                if (AccountController.current != null &&
+                    AccountController.current.getStatus() == Account.Status.SIGNED_IN) {
+                    FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("sellProduct.fxml"));
+                    ScrollPane scrollPane = new ScrollPane();
+                    scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+                    scrollPane.setPrefViewportHeight(450);
+                    VBox vBox = new VBox();
+                    vBox.getChildren().addAll((Pane) fxmlLoader.load());
+                    scrollPane.setContent(vBox);
+                    Scene scene = new Scene(scrollPane);
+                    Javazon.getStage().setScene(scene);
+                    Javazon.getStage().show();
+                } else {
+                    System.out.println("Sign in to sell products");
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         });
-        Button sign_in_button = createButton("Sign In", () -> {
+        sign_in_button = createButton("Sign In", () -> {
             try {
-                Javazon.switchScene("SignIn.fxml");
+                if (AccountController.current == null) {
+                    Javazon.switchScene("SignIn.fxml");
+                } else if (AccountController.current.getStatus() != Account.Status.SIGNED_IN) {
+                    Javazon.switchScene("SignIn.fxml");
+                } else {
+                    System.out.println("Already signed in");
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         });
         Button cart_button = createButton("Cart", () -> System.out.println("Cart Button clicked"));
+        if (AccountController.current != null && AccountController.current.getStatus() == Account.Status.SIGNED_IN) {
+            sign_in_button.setText("Hello," + AccountController.current.getFirstName() + "\nAccount");
+        }
+        Button myMarket_button = createButton("My Market", () -> {
+            if (AccountController.current != null &&
+                AccountController.current.getStatus() == Account.Status.SIGNED_IN) {
+                AccountController.current.loadProducts();
+                ArrayList<Product> marketList = null;
+                // if user added products in the past, deserialize and set myMarket
+                if (!AccountController.current.getMyMarket().isEmpty()) {
+                    marketList =
+                            AccountController.current.deserializeArrList(AccountController.current.getMyMarketFile());
+                    ScrollPane myMarket = new ScrollPane();
+                    myMarket.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+                    myMarket.setPrefViewportHeight(450);
+                    VBox vBox = new VBox();
+                    for (Product product : marketList) {
+                        //vBox.getChildren().add((Node)product);
+                        try {
+                            Scene scene = AccountController.current.addToMarket(product);
+                            Node node = scene.getRoot();
+                            vBox.getChildren().add(node);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    myMarket.setContent(vBox);
+                    Scene scene = new Scene(myMarket, 600, 600);
+                    Javazon.getStage().setScene(scene);
+                    Javazon.getStage().show();
+                }
+            } else {
+                System.out.println("Not signed in. Cannot open myMarket");
+            }
+        });
         HBox hbox = new HBox();
         hbox.setSpacing(10);
         hbox.setPadding(new Insets(10));
-        hbox.getChildren().addAll(logoImage, searchBar, searchIcon, sell_product_button, sign_in_button, cart_button);
+        hbox.getChildren().addAll(logoImage, searchBar, searchIcon, sell_product_button, sign_in_button, cart_button,
+                myMarket_button);
         StackPane stackPane = new StackPane(hbox);
         stackPane.setStyle("-fx-background-color: #00ffff;");
         return stackPane;
@@ -86,7 +151,6 @@ public class MainProductPageController {
         int row = 1, col = 0;
         for (Product product : ProductManager.getInstance().deserializeArrList(textFile)) {
             if (product != null) {
-                String url = product.getUrl();
                 Image image = new Image(product.getUrl());
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(COLUMN_WIDTH);
@@ -130,4 +194,6 @@ public class MainProductPageController {
         button.setOnAction(e -> action.run());
         return button;
     }
+    public Button getSignInButton() { return sign_in_button; }
+    public void setSignInButton(Button sign_in_button) { this.sign_in_button = sign_in_button; }
 }
