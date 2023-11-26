@@ -133,7 +133,7 @@ public class MainProductPageController {
         HBox hbox = new HBox();
         hbox.setSpacing(10);
         hbox.setPadding(new Insets(10));
-        hbox.getChildren().addAll(logoImage, searchBar, searchIcon, sell_product_button, sign_in_button, cart_button,
+        hbox.getChildren().addAll(logoImage, generateSearchBar(), sell_product_button, sign_in_button, cart_button,
                 myMarket_button);
         StackPane stackPane = new StackPane(hbox);
         stackPane.setStyle("-fx-background-color: #00ffff;");
@@ -176,15 +176,15 @@ public class MainProductPageController {
             }
         }
     }
-    private static Button generateSearchIcon(int searchFeatHeight, TextField searchBar) {
+    private static Button generateSearchIcon(int searchBarHeight, TextField searchField) {
         Button searchIcon = new Button();
         searchIcon.setPadding(new Insets(3));
         ImageView search_img = new ImageView(new Image((img_path + "200px-Magnifying_glass_icon.png")));
         search_img.setPreserveRatio(true);
-        search_img.setFitHeight(searchFeatHeight - searchIcon.getPadding().getTop() * 2);
+        search_img.setFitHeight(searchBarHeight - searchIcon.getPadding().getTop() * 2);
         searchIcon.setGraphic(search_img);
         searchIcon.setOnAction(e -> {
-            String enteredText = searchBar.getText();
+            String enteredText = searchField.getText();
             System.out.println("Entered Text: " + enteredText);
         });
         return searchIcon;
@@ -193,6 +193,19 @@ public class MainProductPageController {
         Button button = new Button(label);
         button.setOnAction(e -> action.run());
         return button;
+    }
+    private HBox generateSearchBar() {
+        int searchBarHeight = 30;
+        TextField searchField = generateSearchField(searchBarHeight);
+        Button searchIcon = generateSearchIcon(searchBarHeight, searchField);
+        HBox hbox = new HBox();
+        hbox.getChildren().addAll(searchField, searchIcon);
+        return hbox;
+    }
+    private TextField generateSearchField(int searchBarHeight) {
+        TextField searchField = new TextField();
+        searchField.setPrefHeight(searchBarHeight);
+        return searchField;
     }
     public Button getSignInButton() { return sign_in_button; }
     public void setSignInButton(Button sign_in_button) { this.sign_in_button = sign_in_button; }
