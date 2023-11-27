@@ -7,10 +7,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -19,6 +16,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static edu.sjsu.cs.cs151javazon.Account.userRoles.*;
 import static edu.sjsu.cs.cs151javazon.ProductManager.textFile;
 
 public class MainProductPageController {
@@ -95,9 +93,7 @@ public class MainProductPageController {
             }
         });
         Button cart_button = createButton("Cart", () -> System.out.println("Cart Button clicked"));
-        if (AccountController.current != null && AccountController.current.getStatus() == Account.Status.SIGNED_IN) {
-            sign_in_button.setText("Hello, " + AccountController.current.getFirstName() + "\nAccount");
-        }
+
         Button myMarket_button = createButton("My Market", () -> {
             if (AccountController.current != null &&
                 AccountController.current.getStatus() == Account.Status.SIGNED_IN) {
@@ -111,8 +107,22 @@ public class MainProductPageController {
                     myMarket.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
                     myMarket.setPrefViewportHeight(450);
                     VBox vBox = new VBox();
+                    Button goBack_button;
+                    goBack_button = createButton("", () ->{
+                        try {
+                            Javazon.switchScene("hello-view.fxml");
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    ImageView goBackImage = new ImageView(new Image("https://cdn-icons-png.flaticon.com/256/93/93634.png"));
+                    goBackImage.setFitHeight(28);
+                    goBackImage.setFitWidth(28);
+                    goBack_button.setGraphic(goBackImage);
+                    vBox.getChildren().add(goBack_button);
+
+
                     for (Product product : marketList) {
-                        //vBox.getChildren().add((Node)product);
                         try {
                             Scene scene = AccountController.current.addToMarket(product);
                             Node node = scene.getRoot();
@@ -130,14 +140,42 @@ public class MainProductPageController {
                 System.out.println("Not signed in. Cannot open myMarket");
             }
         });
+
         HBox hbox = new HBox();
         hbox.setSpacing(10);
         hbox.setPadding(new Insets(10));
-        hbox.getChildren().addAll(logoImage, searchBar, searchIcon, sell_product_button, sign_in_button, cart_button,
-                myMarket_button);
+
+        ButtonBar buttonBar = new ButtonBar();
+        Button buyer = new Button("Buyer");
+        Button seller = new Button("Seller");
+        buttonBar.getButtons().addAll(buyer,seller);
+
+
+        hbox.getChildren().addAll(logoImage, searchBar, searchIcon, sell_product_button, sign_in_button, buttonBar);
+
+        if (AccountController.current != null && AccountController.current.getStatus() == Account.Status.SIGNED_IN) {
+            sign_in_button.setText("Hello, " + AccountController.current.getFirstName() + "\nAccount");
+            buyer.setOnAction(event -> {
+                if (hbox.getChildren().contains(myMarket_button)) { hbox.getChildren().remove(myMarket_button); }
+                seller.setStyle("-fx-background-color: #FFFFFF");
+                System.out.println("Buyer selected");
+                buyer.setStyle("-fx-background-color: #FFFF00");
+                AccountController.current.setRole(BUYER);
+                hbox.getChildren().add(cart_button);
+            });
+            seller.setOnAction(event -> {
+                if (hbox.getChildren().contains(cart_button)) { hbox.getChildren().remove(cart_button); }
+                buyer.setStyle("-fx-background-color: #FFFFFF");
+                System.out.println("Seller selected");
+                seller.setStyle("-fx-background-color: #FFFF00");
+                AccountController.current.setRole(SELLER);
+                hbox.getChildren().add(myMarket_button);
+            });
+        }
         StackPane stackPane = new StackPane(hbox);
         stackPane.setStyle("-fx-background-color: #00ffff;");
         return stackPane;
+
     }
     private void generateProductGrid(double stageWidth) {
         int colCount = (int) (stageWidth / COLUMN_WIDTH);
@@ -194,6 +232,4 @@ public class MainProductPageController {
         button.setOnAction(e -> action.run());
         return button;
     }
-    public Button getSignInButton() { return sign_in_button; }
-    public void setSignInButton(Button sign_in_button) { this.sign_in_button = sign_in_button; }
 }
