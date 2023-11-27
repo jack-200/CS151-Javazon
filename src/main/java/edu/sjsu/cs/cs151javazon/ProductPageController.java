@@ -12,11 +12,9 @@ public class ProductPageController {
     @FXML
     private ImageView imageView;
     @FXML
-    private MenuButton menuButton;
-    @FXML
     private MenuItem quantity;
     @FXML
-    private Button addToCart, buyNow, goBack;
+    private Button addToCart, buyNow;
     @FXML
     private CheckBox isGift;
     public Label getName() { return name; }
