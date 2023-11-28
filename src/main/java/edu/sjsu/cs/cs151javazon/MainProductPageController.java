@@ -31,7 +31,7 @@ import static edu.sjsu.cs.cs151javazon.Javazon.showFadingPopup;
 import static edu.sjsu.cs.cs151javazon.ProductManager.textFile;
 
 public class MainProductPageController {
-    private static final String notSignedIn = "Sign In First";
+    public static final String notSignedIn = "Sign In First";
     private static final double COLUMN_WIDTH = 200;
     private static final double GAP = 10;
     private static final String img_path = "file:src/main/resources/images/";
@@ -90,13 +90,13 @@ public class MainProductPageController {
                 Hyperlink productLink = new Hyperlink(product.getName());
                 Label productPrice = new Label("$" + product.getPrice());
                 productPrice.setFont(new Font(20));
+                Label rating = new Label(product.getRating() + "⭐  " + product.getReviews().size());
                 VBox productText = new VBox();
-                productText.getChildren().addAll(productLink, productPrice);
+                productText.getChildren().addAll(productLink, rating, productPrice);
                 gridPane.add(productText, col, row + 1);
                 productLink.setOnAction(e -> {
                     try {
                         product.createProductPage();
-                        Scene productPage = product.getProductPage();
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
@@ -270,7 +270,7 @@ public class MainProductPageController {
                     throw new RuntimeException(e);
                 }
             } else if (comboBox.getValue().equals("Avg. Customer Review")) {
-                System.out.println("sort by review");
+                sortByRating(event);
             } else if (comboBox.getValue().equals("Featured")) {
                 changeOrder = false;
                 loadMainProductPageHelper(event);
@@ -289,7 +289,7 @@ public class MainProductPageController {
         button.setOnAction(e -> action.run());
         return button;
     }
-    private boolean isUserSignedIn() {
+    public static boolean isUserSignedIn() {
         return (AccountController.current != null && AccountController.current.getStatus() == Account.Status.SIGNED_IN);
     }
     private HBox generateSearchBar() {
@@ -307,6 +307,12 @@ public class MainProductPageController {
     }
     private void sortHighToLow(ActionEvent event) throws IOException {
         sortBy(Comparator.comparingDouble(Product::getPrice));
+        Collections.reverse(ProductManager.getInstance().getProducts());
+        changeOrder = true;
+        loadMainProductPageHelper(event);
+    }
+    private void sortByRating(ActionEvent event) {
+        sortBy(Comparator.comparingDouble(Product::getRating));
         Collections.reverse(ProductManager.getInstance().getProducts());
         changeOrder = true;
         loadMainProductPageHelper(event);
@@ -338,7 +344,7 @@ public class MainProductPageController {
     }
     private static void searchForText(String enteredText) {
         ProductManager.getInstance().loadProducts();
-        ArrayList<Product> searchResult = ProductManager.getInstance().searchProduct(enteredText);
+        ArrayList<Product> searchResult = ProductManager.getInstance().searchString(enteredText);
         if (!searchResult.isEmpty()) {
             for (Product product : searchResult) {
                 System.out.println("Found: " + product.getName());

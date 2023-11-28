@@ -9,6 +9,9 @@ import javafx.scene.image.Image;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
+
+import static edu.sjsu.cs.cs151javazon.Javazon.showFadingPopup;
 
 public class Product implements Serializable {
     private static final long serialVersionUID = 8248061374072736483L;
@@ -17,20 +20,47 @@ public class Product implements Serializable {
     private double price, rating;
     private int quantity;
     private ArrayList<Review> reviews;
-    @FXML
-    private Scene productPage;
-    public Product() { System.out.println("Product()"); }
+    private Product() { }
     public Product(String name, int quantity, double price, String description, String url) throws IOException {
+        this(name, quantity, price, description, url, new ArrayList<>());
+    }
+    public Product(String name, int quantity, double price, String description, String url, ArrayList<Review> reviews)
+            throws IOException {
         setName(name);
         setQuantity(quantity);
         setPrice(price);
         setDescription(description);
         setUrl(url);
+        setReviews(reviews);
     }
     public static Product getInstance() {
         if (instance == null) { return null; }
         return instance;
     }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Product other = (Product) obj;
+        return Double.compare(other.price, price) == 0 && Objects.equals(name, other.name) &&
+               Objects.equals(description, other.description) && Objects.equals(url, other.url);
+    }
+    public String toString() { return getName() + " $" + getPrice() + ", " + getReviews().size(); }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public double getPrice() { return price; }
+    public ArrayList<Review> getReviews() {
+        if (reviews == null) {
+            reviews = new ArrayList<>();
+        }
+        return reviews;
+    }
+    public void setReviews(ArrayList<Review> reviews) { this.reviews = reviews; }
+    public void setPrice(double price) { this.price = price; }
     public int getQuantity() { return quantity; }
     public void setQuantity(int quantity) { this.quantity = quantity; }
     public String getUrl() { return url; }
@@ -49,7 +79,7 @@ public class Product implements Serializable {
             controller.getStock().setText("In Stock");
             controller.getBuyNow().setOnAction(e -> {
                 if (AccountController.current == null) {
-                    System.out.println("Sign in to buy product");
+                    showFadingPopup(e, "Sign in to buy product");
                 } else if (AccountController.current.getStatus() == Account.Status.SIGNED_IN) {
                     if (controller.getQuantity() != null) {
                         for (int i = 0; i < Integer.parseInt(controller.getQuantity().getText()); i++) {
@@ -65,9 +95,10 @@ public class Product implements Serializable {
                     }
                 }
             });
+            controller.setCurrProduct(this);
             controller.getAddToCart().setOnAction(e -> {
                 if (AccountController.current == null) {
-                    System.out.println("Sign in to add to cart");
+                    showFadingPopup(e, "Sign in to add to cart");
                 } else if (AccountController.current.getStatus() == Account.Status.SIGNED_IN) {
                     if (controller.getQuantity() != null) {
                         for (int i = 0; i < Integer.parseInt(controller.getQuantity().getText()); i++) {
@@ -87,14 +118,8 @@ public class Product implements Serializable {
         } else {
             System.out.println("Cannot create product page");
         }
-        productPage = new Scene(root);
-        Javazon.getStage().setScene(productPage);
+        Javazon.getStage().setScene(new Scene(root));
     }
-    @FXML
-    public Scene getProductPage() { return productPage; }
-    //    @Override
-    //    public String toString() { return getDescription() + ", " + getPrice() + ", " + getRating() + ", " +
-    //    getReviews(); }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
     public double getRating() {
@@ -102,15 +127,12 @@ public class Product implements Serializable {
         return rating;
     }
     public void calculateRating() {
+        if (reviews == null) {
+            rating = 0.0;
+            return;
+        }
         double sum = 0;
         for (Review review : reviews) { sum += review.getStars(); }
         rating = sum / reviews.size();
     }
-    public ArrayList<Review> getReviews() { return reviews; }
-    public void setReviews(ArrayList<Review> reviews) { this.reviews = reviews; }
-    public String toString() { return getName() + " $" + getPrice(); }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
 }
