@@ -7,11 +7,11 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.sjsu.cs.cs151javazon.ProductPageController">
    <children>
-      <ImageView fx:id="imageView" fitHeight="158.0" fitWidth="147.0" layoutX="96.0" layoutY="104.0" pickOnBounds="true" preserveRatio="true" />
-      <Label fx:id="name" layoutX="407.0" layoutY="119.0" text="Name" />
-      <Label fx:id="price" layoutX="406.0" layoutY="170.0" text="Price" />
-      <Label fx:id="description" layoutX="352.0" layoutY="220.0" text="Description" />
-      <Label layoutX="354.0" layoutY="166.0" text="Price:">
+      <ImageView fx:id="imageView" fitHeight="205.0" fitWidth="202.0" layoutX="73.0" layoutY="97.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="name" layoutX="405.0" layoutY="87.0" prefHeight="65.0" prefWidth="166.0" text="Name" />
+      <Label fx:id="price" layoutX="403.0" layoutY="168.0" text="Price" />
+      <Label fx:id="description" layoutX="352.0" layoutY="220.0" prefHeight="139.0" prefWidth="188.0" text="Description" />
+      <Label layoutX="354.0" layoutY="166.0" text="Price: $">
          <font>
             <Font size="15.0" />
          </font>
@@ -21,7 +21,7 @@
             <Font size="15.0" />
          </font>
       </Label>
-      <Label layoutX="354.0" layoutY="115.0" text="Name:">
+      <Label layoutX="350.0" layoutY="107.0" text="Name:">
          <font>
             <Font size="15.0" />
          </font>
