@@ -24,9 +24,11 @@ import java.util.Comparator;
 
 import static edu.sjsu.cs.cs151javazon.Account.userRoles.BUYER;
 import static edu.sjsu.cs.cs151javazon.Account.userRoles.SELLER;
+import static edu.sjsu.cs.cs151javazon.Javazon.showFadingPopup;
 import static edu.sjsu.cs.cs151javazon.ProductManager.textFile;
 
 public class MainProductPageController {
+    private static final String notSignedIn = "Sign In First";
     private static final double COLUMN_WIDTH = 200;
     private static final double GAP = 10;
     private static final String img_path = "file:src/main/resources/images/";
@@ -108,10 +110,10 @@ public class MainProductPageController {
         //Account hyperlink
         Button account_button = createButton("Account", () -> {
         });
-        Button sell_product_button = createButton("Sell Product", () -> {
+        Button sell_product_button = new Button("Sell Product");
+        sell_product_button.setOnAction(event -> {
             try {
-                if (AccountController.current != null &&
-                    AccountController.current.getStatus() == Account.Status.SIGNED_IN) {
+                if (isUserSignedIn()) {
                     FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("sellProduct.fxml"));
                     ScrollPane scrollPane = new ScrollPane();
                     scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
@@ -123,7 +125,7 @@ public class MainProductPageController {
                     Javazon.getStage().setScene(scene);
                     Javazon.getStage().show();
                 } else {
-                    System.out.println("Sign in to sell products");
+                    showFadingPopup(event, notSignedIn);
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -201,30 +203,36 @@ public class MainProductPageController {
         HBox hbox = new HBox();
         hbox.setSpacing(5);
         hbox.setPadding(new Insets(10));
-        ButtonBar buttonBar = new ButtonBar();
         Button buyer = new Button("Buyer");
         Button seller = new Button("Seller");
-        buttonBar.getButtons().addAll(buyer, seller);
-        if (AccountController.current != null && AccountController.current.getStatus() == Account.Status.SIGNED_IN) {
+        if (isUserSignedIn()) {
             sign_in_button.setText("Hello, " + AccountController.current.getFirstName() + "\nAccount");
-            buyer.setOnAction(event -> {
+        }
+        buyer.setOnAction(event -> {
+            if (isUserSignedIn()) {
                 hbox.getChildren().remove(myMarket_button);
                 seller.setStyle("-fx-background-color: #FFFFFF");
                 System.out.println("Buyer selected");
                 buyer.setStyle("-fx-background-color: #FFFF00");
                 AccountController.current.setRole(BUYER);
                 hbox.getChildren().add(cart_button);
-            });
-            seller.setOnAction(event -> {
+            } else {
+                showFadingPopup(event, notSignedIn);
+            }
+        });
+        seller.setOnAction(event -> {
+            if (isUserSignedIn()) {
                 hbox.getChildren().remove(cart_button);
                 buyer.setStyle("-fx-background-color: #FFFFFF");
                 System.out.println("Seller selected");
                 seller.setStyle("-fx-background-color: #FFFF00");
                 AccountController.current.setRole(SELLER);
                 hbox.getChildren().add(myMarket_button);
-            });
-        }
-        hbox.getChildren().addAll(logoImage, generateSearchBar(), sell_product_button, sign_in_button, buttonBar);
+            } else {
+                showFadingPopup(event, notSignedIn);
+            }
+        });
+        hbox.getChildren().addAll(logoImage, generateSearchBar(), sell_product_button, sign_in_button, buyer, seller);
         StackPane stackPane = new StackPane(hbox);
         stackPane.setStyle("-fx-background-color: #ADD8E6");
         return stackPane;
@@ -258,6 +266,9 @@ public class MainProductPageController {
         Button button = new Button(label);
         button.setOnAction(e -> action.run());
         return button;
+    }
+    private boolean isUserSignedIn() {
+        return (AccountController.current != null && AccountController.current.getStatus() == Account.Status.SIGNED_IN);
     }
     private HBox generateSearchBar() {
         int searchBarHeight = 30;
