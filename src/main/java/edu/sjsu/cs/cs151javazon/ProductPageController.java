@@ -1,10 +1,14 @@
 package edu.sjsu.cs.cs151javazon;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 
-import java.io.IOException;
+import static edu.sjsu.cs.cs151javazon.HelloController.loadMainProductPageHelper;
 
 public class ProductPageController {
     @FXML
@@ -26,7 +30,7 @@ public class ProductPageController {
     public Button getAddToCart() { return addToCart; }
     public CheckBox getIsGift() { return isGift; }
     @FXML
-    protected void onGoBackClick() throws IOException {
-        Javazon.switchScene("hello-view.fxml");
+    protected void onGoBackClick(ActionEvent event) {
+        loadMainProductPageHelper(event);
     }
 }
