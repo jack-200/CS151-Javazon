@@ -19,6 +19,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import static edu.sjsu.cs.cs151javazon.Account.userRoles.BUYER;
 import static edu.sjsu.cs.cs151javazon.Account.userRoles.SELLER;
@@ -236,6 +238,13 @@ public class MainProductPageController {
         comboBox.setValue("Sort By: Featured");
         comboBox.setOnAction(event -> {
             System.out.println("Selected: " + comboBox.getValue());
+            if (comboBox.getValue().equals("Price: Low to High")) {
+                sortLowToHigh();
+            } else if (comboBox.getValue().equals("Price: High to Low")) {
+                sortHighToLow();
+            } else if (comboBox.getValue().equals("Avg. Customer Review")) {
+                System.out.println("sort by review");
+            }
         });
         HBox hbox = new HBox(comboBox);
         StackPane stackPane = new StackPane(hbox);
@@ -258,6 +267,19 @@ public class MainProductPageController {
         hbox.getChildren().addAll(searchField, searchIcon);
         return hbox;
     }
+    private void sortLowToHigh() {
+        sortBy(Comparator.comparingDouble(Product::getPrice));
+        for (Product product : ProductManager.getInstance().getProducts()) {
+            System.out.println(product.toString());
+        }
+    }
+    private void sortHighToLow() {
+        sortBy(Comparator.comparingDouble(Product::getPrice));
+        Collections.reverse(ProductManager.getInstance().getProducts());
+        for (Product product : ProductManager.getInstance().getProducts()) {
+            System.out.println(product.toString());
+        }
+    }
     private TextField generateSearchField(int searchBarHeight) {
         TextField searchField = new TextField();
         searchField.setPrefHeight(searchBarHeight);
@@ -276,6 +298,10 @@ public class MainProductPageController {
             Search(enteredText);
         });
         return searchIcon;
+    }
+    private void sortBy(Comparator<Product> sortBy) {
+        ProductManager.getInstance().loadProducts();
+        ProductManager.getInstance().getProducts().sort(sortBy);
     }
     private static void Search(String enteredText) {
         ProductManager.getInstance().loadProducts();

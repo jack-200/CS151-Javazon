@@ -50,4 +50,5 @@ public class ProductManager implements Serializable {
         }
         return searchResult;
     }
+    public ArrayList<Product> getProducts() { return products; }
 }
