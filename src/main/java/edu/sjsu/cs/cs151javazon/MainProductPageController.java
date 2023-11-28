@@ -3,6 +3,7 @@ package edu.sjsu.cs.cs151javazon;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -258,13 +259,13 @@ public class MainProductPageController {
         comboBox.setOnAction(event -> {
             if (comboBox.getValue().equals("Price: Low to High")) {
                 try {
-                    sortLowToHigh();
+                    sortLowToHigh(event);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             } else if (comboBox.getValue().equals("Price: High to Low")) {
                 try {
-                    sortHighToLow();
+                    sortHighToLow(event);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -272,11 +273,7 @@ public class MainProductPageController {
                 System.out.println("sort by review");
             } else if (comboBox.getValue().equals("Featured")) {
                 changeOrder = false;
-                try {
-                    Javazon.switchScene("hello-view.fxml");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                loadMainProductPageHelper(event);
             }
         });
         HBox hbox = new HBox(comboBox);
@@ -303,16 +300,16 @@ public class MainProductPageController {
         hbox.getChildren().addAll(searchField, searchIcon);
         return hbox;
     }
-    private void sortLowToHigh() throws IOException {
+    private void sortLowToHigh(ActionEvent event) throws IOException {
         sortBy(Comparator.comparingDouble(Product::getPrice));
         changeOrder = true;
-        Javazon.switchScene("hello-view.fxml");
+        loadMainProductPageHelper(event);
     }
-    private void sortHighToLow() throws IOException {
+    private void sortHighToLow(ActionEvent event) throws IOException {
         sortBy(Comparator.comparingDouble(Product::getPrice));
         Collections.reverse(ProductManager.getInstance().getProducts());
         changeOrder = true;
-        Javazon.switchScene("hello-view.fxml");
+        loadMainProductPageHelper(event);
     }
     private TextField generateSearchField(int searchBarHeight) {
         TextField searchField = new TextField();
