@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import static edu.sjsu.cs.cs151javazon.HelloController.loadMainProductPageHelper;
 
 public class CheckoutController {
+    public Button goBack;
     @FXML
     private TableView<Product> cartTable;
     @FXML
@@ -29,6 +30,7 @@ public class CheckoutController {
     private Button checkoutButton;
     @FXML
     private Label totalPriceLabel;
+    public Button getCheckoutButton() { return checkoutButton; }
     @FXML
     public void initialize() {
         // Set up the table columns

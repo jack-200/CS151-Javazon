@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import static edu.sjsu.cs.cs151javazon.Javazon.showFadingPopup;
+import static edu.sjsu.cs.cs151javazon.MainProductPageController.isUserSignedIn;
 
 public class Product implements Serializable {
     private static final long serialVersionUID = 8248061374072736483L;
@@ -78,42 +79,26 @@ public class Product implements Serializable {
             controller.getImageView().setImage(image);
             controller.getStock().setText("In Stock");
             controller.getBuyNow().setOnAction(e -> {
-                if (AccountController.current == null) {
-                    showFadingPopup(e, "Sign in to buy product");
-                } else if (AccountController.current.getStatus() == Account.Status.SIGNED_IN) {
+                if (isUserSignedIn()) {
                     if (controller.getQuantity() != null) {
                         for (int i = 0; i < Integer.parseInt(controller.getQuantity().getText()); i++) {
-                            ShoppingCart.getInstance().addProduct(this); // Add current product to the cart
+                            ShoppingCart.getInstance().addProduct(this);
                         }
                         try {
-                            Javazon.switchScene("Checkout.fxml"); // Switch to the checkout scene
+                            Javazon.switchScene("Checkout.fxml");
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
                     } else {
-                        System.out.println("Did not select quantity");
+                        showFadingPopup(e, "Select Quantity First");
                     }
+                } else {
+                    showFadingPopup(e, "Sign in to buy product");
                 }
             });
             controller.setCurrProduct(this);
             controller.getAddToCart().setOnAction(e -> {
-                if (AccountController.current == null) {
-                    showFadingPopup(e, "Sign in to add to cart");
-                } else if (AccountController.current.getStatus() == Account.Status.SIGNED_IN) {
-                    if (controller.getQuantity() != null) {
-                        for (int i = 0; i < Integer.parseInt(controller.getQuantity().getText()); i++) {
-                            ShoppingCart.getInstance().addProduct(this); // Add current product to the cart
-                        }
-                        try {
-                            Javazon.switchScene("Checkout.fxml"); // Switch to the checkout scene
-                        } catch (IOException ex) {
-                            throw new RuntimeException(ex);
-                        }
-                    } else {
-                        System.out.println("Did not select quantity");
-                    }
-                }
-                // Optionally, transition to shopping cart scene or show confirmation
+                controller.getBuyNow().fire();
             });
         } else {
             System.out.println("Cannot create product page");
