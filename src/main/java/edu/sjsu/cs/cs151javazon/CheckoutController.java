@@ -107,8 +107,8 @@ public class CheckoutController {
     @FXML
     protected void performCheckout() {
         // Implement checkout logic
-        clearCart();
         showCheckoutSuccessPopup();
+        clearCart();
     }
 
     private void showCheckoutSuccessPopup() {
