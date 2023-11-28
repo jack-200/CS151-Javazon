@@ -161,7 +161,7 @@ public class MainProductPageController {
                 throw new RuntimeException(e);
             }
         });
-        if (AccountController.current != null && AccountController.current.getStatus() == Account.Status.SIGNED_IN) {
+        if (isUserSignedIn()) {
             sign_in_button.setText("Hello, " + AccountController.current.getFirstName() + "\nAccount");
         }
         Button myMarket_button = new Button("My Market");
@@ -222,9 +222,9 @@ public class MainProductPageController {
         }
         buyer.setOnAction(event -> {
             if (isUserSignedIn()) {
-                hbox.getChildren().remove(myMarket_button);
+                hbox.getChildren().removeAll(cart_button, sell_product_button, myMarket_button);
                 seller.setStyle("-fx-background-color: #FFFFFF");
-                System.out.println("Buyer selected");
+                showFadingPopup(event, "Buyer Selected");
                 buyer.setStyle("-fx-background-color: #FFFF00");
                 AccountController.current.setRole(BUYER);
                 hbox.getChildren().add(cart_button);
@@ -234,17 +234,17 @@ public class MainProductPageController {
         });
         seller.setOnAction(event -> {
             if (isUserSignedIn()) {
-                hbox.getChildren().remove(cart_button);
+                hbox.getChildren().removeAll(cart_button, sell_product_button, myMarket_button);
                 buyer.setStyle("-fx-background-color: #FFFFFF");
-                System.out.println("Seller selected");
+                showFadingPopup(event, "Seller Selected");
                 seller.setStyle("-fx-background-color: #FFFF00");
                 AccountController.current.setRole(SELLER);
-                hbox.getChildren().add(myMarket_button);
+                hbox.getChildren().addAll(sell_product_button, myMarket_button);
             } else {
                 showFadingPopup(event, notSignedIn);
             }
         });
-        hbox.getChildren().addAll(logoImage, generateSearchBar(), sell_product_button, sign_in_button, buyer, seller);
+        hbox.getChildren().addAll(logoImage, generateSearchBar(), sign_in_button, buyer, seller);
         StackPane stackPane = new StackPane(hbox);
         stackPane.setStyle("-fx-background-color: #ADD8E6");
         return stackPane;

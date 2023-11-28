@@ -7,6 +7,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import static edu.sjsu.cs.cs151javazon.Javazon.height;
+import static edu.sjsu.cs.cs151javazon.Javazon.width;
+
 public class HelloController {
     protected static void loadMainProductPageHelper(ActionEvent event) {
         HelloController HC = new HelloController();
@@ -20,6 +23,10 @@ public class HelloController {
         Scene currentScene = currentStage.getScene();
         double adjustedWidth = currentStage.getWidth() - (currentStage.getWidth() - currentScene.getWidth());
         double adjustedHeight = currentStage.getHeight() - (currentStage.getHeight() - currentScene.getHeight());
-        currentStage.setScene(new Scene(root, adjustedWidth, adjustedHeight));
+        if ((adjustedWidth < width) || (adjustedHeight < height)) {
+            currentStage.setScene(new Scene(root, width, height));
+        } else {
+            currentStage.setScene(new Scene(root, adjustedWidth, adjustedHeight));
+        }
     }
 }

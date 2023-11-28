@@ -14,6 +14,8 @@ import javafx.util.Duration;
 import java.io.IOException;
 
 public class Javazon extends Application {
+    public static final int width = 700;
+    public static final int height = 500;
     private static final ShoppingCart SC = ShoppingCart.getInstance();
     private static final ProductManager PM = ProductManager.getInstance();
     private static final AccountManager AM = AccountManager.getInstance();
@@ -55,7 +57,7 @@ public class Javazon extends Application {
     public void start(Stage stage) throws IOException {
         Javazon = stage;
         FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 700, 500);
+        Scene scene = new Scene(fxmlLoader.load(), width, height);
         stage.setTitle("Javazon");
         stage.setScene(scene);
         stage.show();
