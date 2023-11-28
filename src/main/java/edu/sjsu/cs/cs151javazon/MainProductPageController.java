@@ -34,8 +34,10 @@ public class MainProductPageController {
     private static final double COLUMN_WIDTH = 200;
     private static final double GAP = 10;
     private static final String img_path = "file:src/main/resources/images/";
+    static boolean changeOrder = false;
     private static MainProductPageController instance;
     private final GridPane gridPane = new GridPane(GAP, GAP);
+    ArrayList<Product> order = null;
     @FXML
     private Button sign_in_button;
     public static MainProductPageController getInstance() {
@@ -71,8 +73,13 @@ public class MainProductPageController {
             ColumnConstraints column = new ColumnConstraints(COLUMN_WIDTH);
             gridPane.getColumnConstraints().add(column);
         }
+        if (!changeOrder) {
+            order = ProductManager.getInstance().deserializeArrList(textFile);
+        } else {
+            order = ProductManager.getInstance().getProducts();
+        }
         int row = 1, col = 0;
-        for (Product product : ProductManager.getInstance().deserializeArrList(textFile)) {
+        for (Product product : order) {
             if (product != null) {
                 Image image = new Image(product.getUrl());
                 ImageView imageView = new ImageView(image);
@@ -146,7 +153,6 @@ public class MainProductPageController {
                 throw new RuntimeException(e);
             }
         });
-        //Button cart_button = createButton("Cart", () -> System.out.println("Cart Button clicked"));
         Button cart_button = createButton("Cart", () -> {
             try {
                 Javazon.switchScene("Checkout.fxml");
@@ -250,13 +256,27 @@ public class MainProductPageController {
         comboBox.setItems(items);
         comboBox.setValue("Sort By: Featured");
         comboBox.setOnAction(event -> {
-            System.out.println("Selected: " + comboBox.getValue());
             if (comboBox.getValue().equals("Price: Low to High")) {
-                sortLowToHigh();
+                try {
+                    sortLowToHigh();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             } else if (comboBox.getValue().equals("Price: High to Low")) {
-                sortHighToLow();
+                try {
+                    sortHighToLow();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             } else if (comboBox.getValue().equals("Avg. Customer Review")) {
                 System.out.println("sort by review");
+            } else if (comboBox.getValue().equals("Featured")) {
+                changeOrder = false;
+                try {
+                    Javazon.switchScene("hello-view.fxml");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         HBox hbox = new HBox(comboBox);
@@ -283,18 +303,16 @@ public class MainProductPageController {
         hbox.getChildren().addAll(searchField, searchIcon);
         return hbox;
     }
-    private void sortLowToHigh() {
+    private void sortLowToHigh() throws IOException {
         sortBy(Comparator.comparingDouble(Product::getPrice));
-        for (Product product : ProductManager.getInstance().getProducts()) {
-            System.out.println(product.toString());
-        }
+        changeOrder = true;
+        Javazon.switchScene("hello-view.fxml");
     }
-    private void sortHighToLow() {
+    private void sortHighToLow() throws IOException {
         sortBy(Comparator.comparingDouble(Product::getPrice));
         Collections.reverse(ProductManager.getInstance().getProducts());
-        for (Product product : ProductManager.getInstance().getProducts()) {
-            System.out.println(product.toString());
-        }
+        changeOrder = true;
+        Javazon.switchScene("hello-view.fxml");
     }
     private TextField generateSearchField(int searchBarHeight) {
         TextField searchField = new TextField();
