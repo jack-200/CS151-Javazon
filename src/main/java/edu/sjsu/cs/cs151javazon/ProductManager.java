@@ -16,6 +16,19 @@ public class ProductManager implements Serializable {
         }
         return instance;
     }
+    public void saveProducts() {
+        try {
+            for (Product p : products) {
+                System.out.println(p);
+            }
+            FileOutputStream fileOutputStream = new FileOutputStream(textFile);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(products);
+            System.out.println("Products saved to: " + textFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public void loadProduct(ArrayList<Product> products) {
         this.products = products;
     }
@@ -40,7 +53,7 @@ public class ProductManager implements Serializable {
         products.add(p);
         return products;
     }
-    public ArrayList<Product> searchProduct(String strToSearch) {
+    public ArrayList<Product> searchString(String strToSearch) {
         ArrayList<Product> searchResult = new ArrayList<>();
         for (Product product : products) {
             if (product.getName().toLowerCase().contains(strToSearch.toLowerCase())) {
@@ -50,6 +63,14 @@ public class ProductManager implements Serializable {
             }
         }
         return searchResult;
+    }
+    public void addReview(Product product2, Review review) {
+        for (Product product : products) {
+            if (product.equals(product2)) {
+                product.getReviews().add(review);
+                System.out.println("Review Added");
+            }
+        }
     }
     public ArrayList<Product> getProducts() { return products; }
     public void setProducts(ArrayList<Product> products) { this.products = products; }

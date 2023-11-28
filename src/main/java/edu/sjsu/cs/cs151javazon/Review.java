@@ -1,6 +1,8 @@
 package edu.sjsu.cs.cs151javazon;
 
-public class Review {
+import java.io.Serializable;
+
+public class Review implements Serializable {
     private int stars;
     private String description;
     public Review(int stars, String description) {
