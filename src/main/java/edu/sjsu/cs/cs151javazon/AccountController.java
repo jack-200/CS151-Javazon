@@ -1,6 +1,7 @@
 package edu.sjsu.cs.cs151javazon;
 
 import edu.sjsu.cs.cs151javazon.exceptions.*;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
@@ -15,6 +16,8 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import static edu.sjsu.cs.cs151javazon.AccountManager.textFile;
+import static edu.sjsu.cs.cs151javazon.HelloController.loadMainProductPageHelper;
+import static edu.sjsu.cs.cs151javazon.Javazon.showFadingPopup;
 
 public class AccountController {
     static Account current = null;
@@ -38,7 +41,7 @@ public class AccountController {
     protected void onSellerClick() {
     }
     @FXML
-    protected void onSignUpClick() throws PasswordException {
+    protected void onSignUpClick(ActionEvent event) throws PasswordException {
         if (!firstname.getText().isEmpty() && !lastname.getText().isEmpty() && !email.getText().isEmpty() &&
             !username.getText().isEmpty()) {
             if (Account.getInstance() == null) {
@@ -53,10 +56,10 @@ public class AccountController {
                         FileOutputStream fileOutputStream = new FileOutputStream(textFile);
                         ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
                         out.writeObject(accounts);
-                        System.out.println("acc created!");
+                        showFadingPopup(event, "Account Created");
                         Javazon.switchScene("SignUpFinish.fxml");
                     } else {
-                        System.out.println("cant create acc");
+                        showFadingPopup(event, "Failed to create account");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -72,10 +75,10 @@ public class AccountController {
                     System.out.println(e.getMessage());
                 }
             } else {
-                System.out.println("Account exists");
+                showFadingPopup(event, "Account Exists");
             }
         } else {
-            System.out.println("Fill out all text fields");
+            showFadingPopup(event, "Fill out all text fields");
         }
     }
     public void checkPassword(String password) throws PasswordException {
@@ -149,21 +152,21 @@ public class AccountController {
         }
     }
     @FXML
-    protected void onSignInClick() throws IOException {
+    protected void onSignInClick(ActionEvent event) {
         if (!username.getText().isEmpty() && !password.getText().isEmpty()) {
             Account account = AccountManager.getInstance().searchAccount(username.getText());
             if (account == null) {
-                System.out.println("Account does not exist");
+                showFadingPopup(event, "Account does not exist");
             } else if (password.getText().equals(account.getPassword())) {
-                System.out.println("signed in");
+                showFadingPopup(event, "Signed In");
                 account.setStatus(Account.Status.SIGNED_IN);
                 current = account;
-                Javazon.switchScene("hello-view.fxml");
+                loadMainProductPageHelper(event);
             } else {
-                System.out.println("Username and password do not match");
+                showFadingPopup(event, "Username and password do not match");
             }
         } else {
-            System.out.println("Fill out all text fields");
+            showFadingPopup(event, "Fill out all text fields");
         }
     }
     @FXML
@@ -175,8 +178,8 @@ public class AccountController {
         Javazon.switchScene("SignIn.fxml");
     }
     @FXML
-    protected void onGoBackClick() throws IOException {
-        Javazon.switchScene("hello-view.fxml");
+    protected void onGoBackClick(ActionEvent event) {
+        loadMainProductPageHelper(event);
     }
 }
 
