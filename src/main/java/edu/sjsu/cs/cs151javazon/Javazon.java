@@ -24,7 +24,6 @@ public class Javazon extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource(sceneName));
         Scene scene = new Scene(fxmlLoader.load(), 600, 600);
         Javazon.setScene(scene);
-        //Javazon.show();
     }
     @Override
     public void start(Stage stage) throws IOException {
