@@ -19,7 +19,9 @@ public class ProductPageController {
     private CheckBox isGift;
     public Label getName() { return name; }
     public Label getPrice() { return price; }
-    public Label getDescription() { return description; }
+    public Label getDescription() {
+        description.setWrapText(true);
+        return description; }
     public Label getStock() { return stock; }
     public ImageView getImageView() { return imageView; }
     public Button getBuyNow() { return buyNow; }
