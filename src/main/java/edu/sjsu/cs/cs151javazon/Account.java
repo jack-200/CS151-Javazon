@@ -107,5 +107,6 @@ public class Account implements Serializable {
     public String getMyMarketFile() { return myMarketFile; }
     public void setMyMarketFile(String myMarketFile) { this.myMarketFile = myMarketFile; }
     enum Status {SIGNED_IN, SIGNED_OUT}
+
     public enum userRoles {BUYER, SELLER}
 }
