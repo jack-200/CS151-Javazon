@@ -8,8 +8,12 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class HelloController {
+    protected static void loadMainProductPageHelper(ActionEvent event) {
+        HelloController HC = new HelloController();
+        HC.loadMainProductPage(event);
+    }
     @FXML
-    protected void onHelloButtonClick(ActionEvent event) {
+    protected void loadMainProductPage(ActionEvent event) {
         Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         MainProductPageController mainProductPageController = new MainProductPageController();
         Parent root = mainProductPageController.getRoot(currentStage);

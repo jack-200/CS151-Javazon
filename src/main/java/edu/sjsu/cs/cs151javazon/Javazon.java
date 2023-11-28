@@ -29,7 +29,7 @@ public class Javazon extends Application {
     public void start(Stage stage) throws IOException {
         Javazon = stage;
         FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 600, 500);
+        Scene scene = new Scene(fxmlLoader.load(), 650, 500);
         stage.setTitle("Javazon");
         stage.setScene(scene);
         stage.show();

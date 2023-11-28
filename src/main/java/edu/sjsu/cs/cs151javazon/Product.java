@@ -49,7 +49,6 @@ public class Product implements Serializable {
             Image image = new Image(url);
             controller.getImageView().setImage(image);
             controller.getStock().setText("In Stock");
-
             controller.getBuyNow().setOnAction(e -> {
                 ShoppingCart.getInstance().addProduct(this); // Add current product to the cart
                 try {
@@ -58,7 +57,6 @@ public class Product implements Serializable {
                     throw new RuntimeException(ex);
                 }
             });
-
             controller.getAddToCart().setOnAction(e -> {
                 ShoppingCart.getInstance().addProduct(this); // Add current product to the cart
                 // Optionally, transition to shopping cart scene or show confirmation
@@ -69,7 +67,6 @@ public class Product implements Serializable {
         productPage = new Scene(root);
         Javazon.getStage().setScene(productPage);
     }
-
     @FXML
     public Scene getProductPage() { return productPage; }
     //    @Override

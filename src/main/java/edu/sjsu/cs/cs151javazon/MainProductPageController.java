@@ -14,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -73,7 +74,11 @@ public class MainProductPageController {
                 imageView.setFitHeight(COLUMN_WIDTH);
                 gridPane.add(imageView, col, row);
                 Hyperlink productLink = new Hyperlink(product.getName());
-                gridPane.add(productLink, col, row + 1);
+                Label productPrice = new Label("$" + product.getPrice());
+                productPrice.setFont(new Font(20));
+                VBox productText = new VBox();
+                productText.getChildren().addAll(productLink, productPrice);
+                gridPane.add(productText, col, row + 1);
                 productLink.setOnAction(e -> {
                     try {
                         product.createProductPage();
@@ -192,18 +197,12 @@ public class MainProductPageController {
             }
         });
         HBox hbox = new HBox();
-        hbox.setSpacing(10);
+        hbox.setSpacing(5);
         hbox.setPadding(new Insets(10));
         ButtonBar buttonBar = new ButtonBar();
         Button buyer = new Button("Buyer");
         Button seller = new Button("Seller");
         buttonBar.getButtons().addAll(buyer, seller);
-        hbox.getChildren().addAll(logoImage, generateSearchBar(), sell_product_button, sign_in_button, buttonBar);
-        StackPane stackPane = new StackPane(hbox);
-        BackgroundFill backgroundFill =
-                new BackgroundFill(Color.web("#ADD8E6"), CornerRadii.EMPTY, javafx.geometry.Insets.EMPTY);
-        Background background = new Background(backgroundFill);
-        stackPane.setBackground(background);
         if (AccountController.current != null && AccountController.current.getStatus() == Account.Status.SIGNED_IN) {
             sign_in_button.setText("Hello, " + AccountController.current.getFirstName() + "\nAccount");
             buyer.setOnAction(event -> {
@@ -223,6 +222,9 @@ public class MainProductPageController {
                 hbox.getChildren().add(myMarket_button);
             });
         }
+        hbox.getChildren().addAll(logoImage, generateSearchBar(), sell_product_button, sign_in_button, buttonBar);
+        StackPane stackPane = new StackPane(hbox);
+        stackPane.setStyle("-fx-background-color: #ADD8E6");
         return stackPane;
     }
     private StackPane generateBottomHeader() {
