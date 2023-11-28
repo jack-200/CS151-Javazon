@@ -21,7 +21,7 @@ public class Account implements Serializable {
     private userRoles role;
     private ArrayList<Product> myMarket;
     private Status status;
-    public Account() { }
+    private Account() { }
     public Account(String firstName, String lastName, String email, String userName, String password) {
         setFirstName(firstName);
         setLastName(lastName);
@@ -85,24 +85,23 @@ public class Account implements Serializable {
         return myProduct;
     }
     public void loadProduct(ArrayList<Product> myMarket) { this.myMarket = myMarket; }
-    public void loadProducts() {
+    public void loadProducts() throws FileNotFoundException {
         myMarket = deserializeArrList(getMyMarketFile());
     }
-    public ArrayList<Product> deserializeArrList(String file) {
-        //ArrayList<Account> accounts;
+    public ArrayList<Product> deserializeArrList(String file) throws FileNotFoundException {
+        myMarket = new ArrayList<>();
         try {
             FileInputStream fileInputStream = new FileInputStream(file);
             ObjectInputStream in = new ObjectInputStream(fileInputStream);
             myMarket = (ArrayList<Product>) in.readObject();
             return myMarket;
         } catch (EOFException | ClassNotFoundException e) {
-            return new ArrayList<>();
+            return myMarket;
         } catch (FileNotFoundException e) {
-            System.out.println("my market is empty.");
+            throw new FileNotFoundException();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return null;
     }
     public String getMyMarketFile() { return myMarketFile; }
     public void setMyMarketFile(String myMarketFile) { this.myMarketFile = myMarketFile; }

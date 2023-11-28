@@ -28,8 +28,9 @@ public class Javazon extends Application {
     }
     public static void switchScene(String sceneName) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource(sceneName));
-        Scene scene = new Scene(fxmlLoader.load(), 700, 500);
-        Javazon.setScene(scene);
+        Scene currentScene = Javazon.getScene();
+        Scene newScene = new Scene(fxmlLoader.load(), currentScene.getWidth(), currentScene.getHeight());
+        Javazon.setScene(newScene);
     }
     public static void showFadingPopup(ActionEvent actionEvent, String message) {
         Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();

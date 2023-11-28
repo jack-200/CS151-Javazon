@@ -16,6 +16,11 @@ public class AccountManager implements Serializable {
         }
         return instance;
     }
+    public static void saveAccounts(ArrayList<Account> accounts) throws IOException {
+        FileOutputStream fileOutputStream = new FileOutputStream(textFile);
+        ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
+        out.writeObject(accounts);
+    }
     // load new account to ArrayList
     public void loadAccount(ArrayList<Account> accounts) {
         this.accounts = accounts;

@@ -25,7 +25,8 @@ public class ProductPageController {
     public Label getPrice() { return price; }
     public Label getDescription() {
         description.setWrapText(true);
-        return description; }
+        return description;
+    }
     public Label getStock() { return stock; }
     public ImageView getImageView() { return imageView; }
     public Button getBuyNow() { return buyNow; }

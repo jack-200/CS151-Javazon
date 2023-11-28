@@ -10,9 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import static edu.sjsu.cs.cs151javazon.AccountManager.textFile;
@@ -26,7 +24,7 @@ public class AccountController {
     @FXML
     private Label FirstNameLabel, LastNameLabel, EmailLabel, UsernameLabel, PasswordLabel, AddressLabel;
     @FXML
-    private TextField firstname, lastname, email, username, password, address;
+    private TextField firstname, lastname, email, username, password, address, paymentMethod;
     @FXML
     private Text passwordReq, uppercaseReq, lowercaseReq, specialCharReq, numberReq, lengthReq;
     @FXML
@@ -53,10 +51,7 @@ public class AccountController {
                         current = account;
                         accounts.add(account);
                         AccountManager.getInstance().loadAccount(accounts);
-                        FileOutputStream fileOutputStream = new FileOutputStream(textFile);
-                        ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
-                        out.writeObject(accounts);
-                        showFadingPopup(event, "Account Created");
+                        AccountManager.saveAccounts(accounts);
                         Javazon.switchScene("SignUpFinish.fxml");
                     } else {
                         showFadingPopup(event, "Failed to create account");
@@ -137,9 +132,9 @@ public class AccountController {
         }
     }
     @FXML
-    protected void onSignUpSaveClick() throws IOException {
+    protected void onSignUpSaveClick(ActionEvent event) throws IOException {
         if (address.getText().isEmpty()) {
-            System.out.println("Fill out address");
+            showFadingPopup(event, "Fill out address");
         } else {
             current.setAddress(address.getText());
             if (buyer.isPressed()) {
@@ -148,7 +143,9 @@ public class AccountController {
                 current.setRole(Account.userRoles.SELLER);
             }
             current.setStatus(Account.Status.SIGNED_IN);
-            Javazon.switchScene("hello-view.fxml");
+            AccountManager.saveAccounts(accounts);
+            showFadingPopup(event, "Account Created");
+            loadMainProductPageHelper(event);
         }
     }
     @FXML

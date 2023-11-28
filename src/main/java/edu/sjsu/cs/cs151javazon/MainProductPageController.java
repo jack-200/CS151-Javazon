@@ -17,6 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,6 +25,7 @@ import java.util.Comparator;
 
 import static edu.sjsu.cs.cs151javazon.Account.userRoles.BUYER;
 import static edu.sjsu.cs.cs151javazon.Account.userRoles.SELLER;
+import static edu.sjsu.cs.cs151javazon.HelloController.loadMainProductPageHelper;
 import static edu.sjsu.cs.cs151javazon.Javazon.showFadingPopup;
 import static edu.sjsu.cs.cs151javazon.ProductManager.textFile;
 
@@ -155,26 +157,29 @@ public class MainProductPageController {
         if (AccountController.current != null && AccountController.current.getStatus() == Account.Status.SIGNED_IN) {
             sign_in_button.setText("Hello, " + AccountController.current.getFirstName() + "\nAccount");
         }
-        Button myMarket_button = createButton("My Market", () -> {
-            if (AccountController.current != null &&
-                AccountController.current.getStatus() == Account.Status.SIGNED_IN) {
-                AccountController.current.loadProducts();
+        Button myMarket_button = new Button("My Market");
+        myMarket_button.setOnAction(event -> {
+            if (isUserSignedIn()) {
+                try {
+                    AccountController.current.loadProducts();
+                } catch (FileNotFoundException e) {
+                    showFadingPopup(event, "My Market is empty.");
+                }
                 ArrayList<Product> marketList = null;
                 // if user added products in the past, deserialize and set myMarket
                 if (!AccountController.current.getMyMarket().isEmpty()) {
-                    marketList =
-                            AccountController.current.deserializeArrList(AccountController.current.getMyMarketFile());
+                    try {
+                        marketList = AccountController.current.deserializeArrList(
+                                AccountController.current.getMyMarketFile());
+                    } catch (FileNotFoundException ignored) {
+                    }
                     ScrollPane myMarket = new ScrollPane();
                     myMarket.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
                     myMarket.setPrefViewportHeight(450);
                     VBox vBox = new VBox();
-                    Button goBack_button;
-                    goBack_button = createButton("", () -> {
-                        try {
-                            Javazon.switchScene("hello-view.fxml");
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+                    Button goBack_button = new Button("");
+                    goBack_button.setOnAction(event2 -> {
+                        loadMainProductPageHelper(event2);
                     });
                     ImageView goBackImage =
                             new ImageView(new Image("https://cdn-icons-png.flaticon.com/256/93/93634.png"));
