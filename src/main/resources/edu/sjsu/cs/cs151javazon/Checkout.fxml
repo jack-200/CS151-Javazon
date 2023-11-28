@@ -24,7 +24,7 @@
             <TableColumn fx:id="productNameCol" text="Product Name"/>
             <TableColumn fx:id="quantityCol" text="Quantity" />
             <TableColumn fx:id="priceCol" text="Price" />
-            <TableColumn fx:id="removeCol" text="Remove" />
+            <TableColumn fx:id="removeCol" />
         </columns>
     </TableView>
     <HBox spacing="15" alignment="CENTER">
