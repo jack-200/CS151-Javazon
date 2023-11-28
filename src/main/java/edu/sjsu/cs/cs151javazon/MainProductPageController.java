@@ -37,17 +37,6 @@ public class MainProductPageController {
         }
         return instance;
     }
-    private static void Search(String enteredText) {
-        ProductManager.getInstance().loadProducts();
-        ArrayList<Product> searchResult = ProductManager.getInstance().searchProduct(enteredText);
-        if (!searchResult.isEmpty()) {
-            for (Product product : searchResult) {
-                System.out.println("Found: " + product.getName());
-            }
-        } else {
-            System.out.println("Did not find " + enteredText);
-        }
-    }
     public Parent getRoot(Stage primaryStage) {
         VBox vbox = new VBox();
         vbox.getChildren().addAll(generateHeader(), gridPane);
@@ -210,11 +199,11 @@ public class MainProductPageController {
         Button seller = new Button("Seller");
         buttonBar.getButtons().addAll(buyer, seller);
         hbox.getChildren().addAll(logoImage, generateSearchBar(), sell_product_button, sign_in_button, buttonBar);
-        StackPane stackPane1 = new StackPane(hbox);
+        StackPane stackPane = new StackPane(hbox);
         BackgroundFill backgroundFill =
                 new BackgroundFill(Color.web("#ADD8E6"), CornerRadii.EMPTY, javafx.geometry.Insets.EMPTY);
         Background background = new Background(backgroundFill);
-        stackPane1.setBackground(background);
+        stackPane.setBackground(background);
         if (AccountController.current != null && AccountController.current.getStatus() == Account.Status.SIGNED_IN) {
             sign_in_button.setText("Hello, " + AccountController.current.getFirstName() + "\nAccount");
             buyer.setOnAction(event -> {
@@ -234,8 +223,6 @@ public class MainProductPageController {
                 hbox.getChildren().add(myMarket_button);
             });
         }
-        StackPane stackPane = new StackPane(hbox);
-        stackPane.setStyle("-fx-background-color: #00ffff;");
         return stackPane;
     }
     private StackPane generateBottomHeader() {
@@ -284,8 +271,20 @@ public class MainProductPageController {
         searchIcon.setOnAction(e -> {
             String enteredText = searchField.getText();
             System.out.println("Entered Text: " + enteredText);
+            Search(enteredText);
         });
         return searchIcon;
+    }
+    private static void Search(String enteredText) {
+        ProductManager.getInstance().loadProducts();
+        ArrayList<Product> searchResult = ProductManager.getInstance().searchProduct(enteredText);
+        if (!searchResult.isEmpty()) {
+            for (Product product : searchResult) {
+                System.out.println("Found: " + product.getName());
+            }
+        } else {
+            System.out.println("Did not find " + enteredText);
+        }
     }
     public Button getSignInButton() { return sign_in_button; }
     public void setSignInButton(Button sign_in_button) { this.sign_in_button = sign_in_button; }
