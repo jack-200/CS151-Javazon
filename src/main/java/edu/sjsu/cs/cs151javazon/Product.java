@@ -48,15 +48,40 @@ public class Product implements Serializable {
             controller.getImageView().setImage(image);
             controller.getStock().setText("In Stock");
             controller.getBuyNow().setOnAction(e -> {
-                ShoppingCart.getInstance().addProduct(this); // Add current product to the cart
-                try {
-                    Javazon.switchScene("Checkout.fxml"); // Switch to the checkout scene
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
+                if (AccountController.current == null) {
+                    System.out.println("Sign in to buy product");
+                } else if (AccountController.current.getStatus() == Account.Status.SIGNED_IN) {
+                    if (controller.getQuantity() != null) {
+                        for (int i = 0; i < Integer.parseInt(controller.getQuantity().getText()); i++) {
+                            ShoppingCart.getInstance().addProduct(this); // Add current product to the cart
+                        }
+                        try {
+                            Javazon.switchScene("Checkout.fxml"); // Switch to the checkout scene
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    } else {
+                        System.out.println("Did not select quantity");
+                    }
                 }
             });
             controller.getAddToCart().setOnAction(e -> {
-                ShoppingCart.getInstance().addProduct(this); // Add current product to the cart
+                if (AccountController.current == null) {
+                    System.out.println("Sign in to add to cart");
+                } else if (AccountController.current.getStatus() == Account.Status.SIGNED_IN) {
+                    if (controller.getQuantity() != null) {
+                        for (int i = 0; i < Integer.parseInt(controller.getQuantity().getText()); i++) {
+                            ShoppingCart.getInstance().addProduct(this); // Add current product to the cart
+                        }
+                        try {
+                            Javazon.switchScene("Checkout.fxml"); // Switch to the checkout scene
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    } else {
+                        System.out.println("Did not select quantity");
+                    }
+                }
                 // Optionally, transition to shopping cart scene or show confirmation
             });
         } else {
