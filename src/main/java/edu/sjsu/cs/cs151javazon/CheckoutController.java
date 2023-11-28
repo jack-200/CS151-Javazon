@@ -39,13 +39,30 @@ public class CheckoutController {
         productNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity")); // Adjust if your Product class has a quantity field
         priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+        removeCol.setCellFactory(param -> new TableCell<Product, Button>() {
+            private final Button removeButton = new Button("Remove");
+
+            @Override
+            protected void updateItem(Button item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(removeButton);
+                    removeButton.setOnAction(event -> {
+                        Product product = getTableView().getItems().get(getIndex());
+                        removeProductFromCart(product);
+                        loadCartItems(); // Refresh the cart items in the table
+                    });
+                }
+            }
+        });
+
 
         // Load cart items
         loadCartItems();
 
-        // Set up button actions
-        //clearCartButton.setOnAction(event -> ShoppingCart.getInstance().clearCart());
-        //checkoutButton.setOnAction(event -> performCheckout());
     }
 
     @FXML
@@ -74,8 +91,8 @@ public class CheckoutController {
         double totalPrice = ShoppingCart.getInstance().getTotalPrice();
         totalPriceLabel.setText(String.format("Total Price: $%.2f", totalPrice));
     }
-
-    private void removeProductFromCart(Product product) {
+    @FXML
+    protected void removeProductFromCart(Product product) {
         ShoppingCart.getInstance().removeProduct(product);
         loadCartItems();
     }
