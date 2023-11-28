@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
 
-<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" />
+<VBox fx:id="cartVBox" spacing="10" alignment="TOP_CENTER" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="edu.sjsu.cs.cs151javazon.CheckoutController">
+    <Button fx:id="goBack" contentDisplay="GRAPHIC_ONLY" layoutX="14.0" layoutY="7.0" mnemonicParsing="false" onAction="#onBackButtonClick" prefHeight="36.0" prefWidth="31.0" text="Button">
+        <graphic>
+            <ImageView fitHeight="28.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="https://cdn-icons-png.flaticon.com/256/93/93634.png" />
+                </image>
+            </ImageView>
+        </graphic>
+    </Button>
+    <TableView fx:id="cartTable">
+        <columns>
+            <TableColumn fx:id="productNameCol" text="Product Name"/>
+            <TableColumn fx:id="quantityCol" text="Quantity" />
+            <TableColumn fx:id="priceCol" text="Price" />
+            <TableColumn fx:id="removeCol" text="Remove" />
+        </columns>
+    </TableView>
+    <HBox spacing="15" alignment="CENTER">
+        <Button fx:id="clearCartButton" text="Clear Cart" onAction="#clearCart"/>
+        <Button fx:id="checkoutButton" text="Checkout" onAction="#performCheckout"/>
+    </HBox>
+    <Label fx:id="totalPriceLabel" text="Total Price: $" />
+</VBox>

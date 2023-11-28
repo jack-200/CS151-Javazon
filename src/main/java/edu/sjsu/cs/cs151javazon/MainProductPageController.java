@@ -94,7 +94,14 @@ public class MainProductPageController {
                 throw new RuntimeException(e);
             }
         });
-        Button cart_button = createButton("Cart", () -> System.out.println("Cart Button clicked"));
+        //Button cart_button = createButton("Cart", () -> System.out.println("Cart Button clicked"));
+        Button cart_button = createButton("Cart", () ->{
+            try {
+                Javazon.switchScene("Checkout.fxml");
+            } catch(IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
         if (AccountController.current != null && AccountController.current.getStatus() == Account.Status.SIGNED_IN) {
             sign_in_button.setText("Hello, " + AccountController.current.getFirstName() + "\nAccount");
         }

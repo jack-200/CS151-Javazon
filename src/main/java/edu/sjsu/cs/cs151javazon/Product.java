@@ -49,18 +49,19 @@ public class Product implements Serializable {
             Image image = new Image(url);
             controller.getImageView().setImage(image);
             controller.getStock().setText("In Stock");
+
             controller.getBuyNow().setOnAction(e -> {
-                if (controller.getIsGift().isSelected()) {
-                    // set new address
-                }
+                ShoppingCart.getInstance().addProduct(this); // Add current product to the cart
                 try {
-                    Javazon.switchScene("Checkout.fxml");
+                    Javazon.switchScene("Checkout.fxml"); // Switch to the checkout scene
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
             });
+
             controller.getAddToCart().setOnAction(e -> {
-                //transition to shopping cart scene
+                ShoppingCart.getInstance().addProduct(this); // Add current product to the cart
+                // Optionally, transition to shopping cart scene or show confirmation
             });
         } else {
             System.out.println("Cannot create product page");
@@ -68,6 +69,7 @@ public class Product implements Serializable {
         productPage = new Scene(root);
         Javazon.getStage().setScene(productPage);
     }
+
     @FXML
     public Scene getProductPage() { return productPage; }
     //    @Override
