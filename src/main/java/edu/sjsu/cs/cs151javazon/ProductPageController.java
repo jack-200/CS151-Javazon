@@ -15,12 +15,15 @@ public class ProductPageController {
     @FXML
     private MenuItem quantity;
     @FXML
-    private Button addToCart, buyNow;
+    private Button addToCart, buyNow, addReview;
     @FXML
     private CheckBox isGift;
     @FXML
     private MenuButton menuButton;
-    public Label getName() { return name; }
+    public Label getName() {
+        name.setWrapText(true);
+        return name;
+    }
     public Label getPrice() { return price; }
     public Label getDescription() {
         description.setWrapText(true);
@@ -41,5 +44,9 @@ public class ProductPageController {
     protected void onMenuItemClick(ActionEvent event) {
         quantity = (MenuItem) event.getSource();
         menuButton.setText(quantity.getText());
+    }
+    @FXML
+    protected void onAddReviewClick(ActionEvent event) {
+        System.out.println("Add review clicked");
     }
 }
