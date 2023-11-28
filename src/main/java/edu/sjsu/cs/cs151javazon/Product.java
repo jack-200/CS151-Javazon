@@ -31,8 +31,6 @@ public class Product implements Serializable {
         if (instance == null) { return null; }
         return instance;
     }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
     public int getQuantity() { return quantity; }
     public void setQuantity(int quantity) { this.quantity = quantity; }
     public String getUrl() { return url; }
@@ -74,8 +72,6 @@ public class Product implements Serializable {
     //    getReviews(); }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
     public double getRating() {
         calculateRating();
         return rating;
@@ -87,4 +83,9 @@ public class Product implements Serializable {
     }
     public ArrayList<Review> getReviews() { return reviews; }
     public void setReviews(ArrayList<Review> reviews) { this.reviews = reviews; }
+    public String toString() { return getName() + " $" + getPrice(); }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
 }
