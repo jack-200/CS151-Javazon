@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class Javazon extends Application {
     public static final int width = 700;
-    public static final int height = 500;
+    public static final int height = 600;
     private static final ShoppingCart SC = ShoppingCart.getInstance();
     private static final ProductManager PM = ProductManager.getInstance();
     private static final AccountManager AM = AccountManager.getInstance();
