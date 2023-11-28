@@ -323,10 +323,12 @@ public class MainProductPageController {
         search_img.setPreserveRatio(true);
         search_img.setFitHeight(searchBarHeight - searchIcon.getPadding().getTop() * 2);
         searchIcon.setGraphic(search_img);
-        searchIcon.setOnAction(e -> {
+        searchIcon.setOnAction(event -> {
             String enteredText = searchField.getText();
             System.out.println("Entered Text: " + enteredText);
-            Search(enteredText);
+            searchForText(enteredText);
+            changeOrder = true;
+            loadMainProductPageHelper(event);
         });
         return searchIcon;
     }
@@ -334,13 +336,14 @@ public class MainProductPageController {
         ProductManager.getInstance().loadProducts();
         ProductManager.getInstance().getProducts().sort(sortBy);
     }
-    private static void Search(String enteredText) {
+    private static void searchForText(String enteredText) {
         ProductManager.getInstance().loadProducts();
         ArrayList<Product> searchResult = ProductManager.getInstance().searchProduct(enteredText);
         if (!searchResult.isEmpty()) {
             for (Product product : searchResult) {
                 System.out.println("Found: " + product.getName());
             }
+            ProductManager.getInstance().setProducts(searchResult);
         } else {
             System.out.println("Did not find " + enteredText);
         }

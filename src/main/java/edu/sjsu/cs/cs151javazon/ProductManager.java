@@ -40,15 +40,17 @@ public class ProductManager implements Serializable {
         products.add(p);
         return products;
     }
-    // will use later
-    public ArrayList<Product> searchProduct(String name) {
+    public ArrayList<Product> searchProduct(String strToSearch) {
         ArrayList<Product> searchResult = new ArrayList<>();
         for (Product product : products) {
-            if (product.getName().equals(name)) {
+            if (product.getName().toLowerCase().contains(strToSearch.toLowerCase())) {
+                searchResult.add(product);
+            } else if (product.getDescription().toLowerCase().contains(strToSearch.toLowerCase())) {
                 searchResult.add(product);
             }
         }
         return searchResult;
     }
     public ArrayList<Product> getProducts() { return products; }
+    public void setProducts(ArrayList<Product> products) { this.products = products; }
 }
