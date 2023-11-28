@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+import static edu.sjsu.cs.cs151javazon.HelloController.loadMainProductPageHelper;
 import static edu.sjsu.cs.cs151javazon.ProductManager.textFile;
 
 public class SellProductController {
@@ -60,7 +61,7 @@ public class SellProductController {
                 ObjectOutputStream out1 = new ObjectOutputStream(fileOutputStream1);
                 out1.writeObject(AccountController.current.getMyMarket());
                 System.out.println("product added");
-                System.out.println("Total number of products:" + products.size());
+                System.out.println("Total number of products: " + products.size());
                 // update vbox that is inside scroll pane
                 FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("sellProduct.fxml"));
                 ScrollPane sc = (ScrollPane) Javazon.getStage().getScene().getRoot();
@@ -93,8 +94,7 @@ public class SellProductController {
         menuButton.setText(quantity.getText());
     }
     @FXML
-    protected void onExitClick() throws IOException {
-        // show main product page with new products if added
-        Javazon.switchScene("hello-view.fxml");
+    protected void onExitClick(ActionEvent event) {
+        loadMainProductPageHelper(event);
     }
 }
