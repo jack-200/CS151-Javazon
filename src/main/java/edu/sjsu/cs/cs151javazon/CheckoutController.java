@@ -3,17 +3,14 @@ package edu.sjsu.cs.cs151javazon;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import static edu.sjsu.cs.cs151javazon.HelloController.loadMainProductPageHelper;
 
 public class CheckoutController {
     @FXML
@@ -36,16 +33,13 @@ public class CheckoutController {
     public void initialize() {
         // Set up the table columns
         productNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        quantityCol.setCellValueFactory(
-                new PropertyValueFactory<>("quantity")); 
+        quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
         removeCol.setCellFactory(param -> new TableCell<Product, Button>() {
             private final Button removeButton = new Button("Remove");
-
             @Override
             protected void updateItem(Button item, boolean empty) {
                 super.updateItem(item, empty);
-
                 if (empty) {
                     setGraphic(null);
                 } else {
@@ -58,43 +52,17 @@ public class CheckoutController {
                 }
             }
         });
-
         // Load cart items
         loadCartItems();
-
-    }
-    private void loadCartItems() {
-        cartTable.getItems().setAll(ShoppingCart.getInstance().getProducts());
-        updateTotalPrice();
-    }
-    private void updateTotalPrice() {
-        double totalPrice = ShoppingCart.getInstance().getTotalPrice();
-        totalPriceLabel.setText(String.format("Total Price: $%.2f", totalPrice));
     }
     @FXML
     protected void onBackButtonClick(ActionEvent event) {
-        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        MainProductPageController mainProductPageController = new MainProductPageController();
-        Parent root = mainProductPageController.getRoot(currentStage);
-        Scene currentScene = currentStage.getScene();
-        double adjustedWidth = currentStage.getWidth() - (currentStage.getWidth() - currentScene.getWidth());
-        double adjustedHeight = currentStage.getHeight() - (currentStage.getHeight() - currentScene.getHeight());
-        currentStage.setScene(new Scene(root, adjustedWidth, adjustedHeight));
+        loadMainProductPageHelper(event);
     }
     private Button createButton(String label, Runnable action) {
         Button button = new Button(label);
         button.setOnAction(e -> action.run());
         return button;
-    }
-
-    private void loadCartItems() {
-        cartTable.getItems().setAll(ShoppingCart.getInstance().getProducts());
-        updateTotalPrice();
-    }
-
-    private void updateTotalPrice() {
-        double totalPrice = ShoppingCart.getInstance().getTotalPrice();
-        totalPriceLabel.setText(String.format("Total Price: $%.2f", totalPrice));
     }
     @FXML
     protected void removeProductFromCart(Product product) {
@@ -106,12 +74,6 @@ public class CheckoutController {
         // Implement checkout logic
         showCheckoutSuccessPopup();
         clearCart();
-    }
-    @FXML
-    //Clear the cart when the button is pressed
-    private void clearCart() {
-        ShoppingCart.getInstance().clearCart();
-        loadCartItems();
     }
     private void showCheckoutSuccessPopup() {
         // Create a new stage (window)
@@ -130,6 +92,20 @@ public class CheckoutController {
         popupStage.setScene(scene);
         // Show the popup stage
         popupStage.show();
+    }
+    @FXML
+    //Clear the cart when the button is pressed
+    private void clearCart() {
+        ShoppingCart.getInstance().clearCart();
+        loadCartItems();
+    }
+    private void loadCartItems() {
+        cartTable.getItems().setAll(ShoppingCart.getInstance().getProducts());
+        updateTotalPrice();
+    }
+    private void updateTotalPrice() {
+        double totalPrice = ShoppingCart.getInstance().getTotalPrice();
+        totalPriceLabel.setText(String.format("Total Price: $%.2f", totalPrice));
     }
 }
 
