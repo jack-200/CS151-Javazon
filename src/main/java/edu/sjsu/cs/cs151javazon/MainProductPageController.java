@@ -19,6 +19,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static edu.sjsu.cs.cs151javazon.Account.userRoles.BUYER;
+import static edu.sjsu.cs.cs151javazon.Account.userRoles.SELLER;
 import static edu.sjsu.cs.cs151javazon.ProductManager.textFile;
 
 public class MainProductPageController {
@@ -34,6 +36,17 @@ public class MainProductPageController {
             instance = new MainProductPageController();
         }
         return instance;
+    }
+    private static void Search(String enteredText) {
+        ProductManager.getInstance().loadProducts();
+        ArrayList<Product> searchResult = ProductManager.getInstance().searchProduct(enteredText);
+        if (!searchResult.isEmpty()) {
+            for (Product product : searchResult) {
+                System.out.println("Found: " + product.getName());
+            }
+        } else {
+            System.out.println("Did not find " + enteredText);
+        }
     }
     public Parent getRoot(Stage primaryStage) {
         VBox vbox = new VBox();
@@ -133,7 +146,14 @@ public class MainProductPageController {
                 throw new RuntimeException(e);
             }
         });
-        Button cart_button = createButton("Cart", () -> System.out.println("Cart Button clicked"));
+        //Button cart_button = createButton("Cart", () -> System.out.println("Cart Button clicked"));
+        Button cart_button = createButton("Cart", () -> {
+            try {
+                Javazon.switchScene("Checkout.fxml");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
         if (AccountController.current != null && AccountController.current.getStatus() == Account.Status.SIGNED_IN) {
             sign_in_button.setText("Hello, " + AccountController.current.getFirstName() + "\nAccount");
         }
@@ -150,8 +170,21 @@ public class MainProductPageController {
                     myMarket.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
                     myMarket.setPrefViewportHeight(450);
                     VBox vBox = new VBox();
+                    Button goBack_button;
+                    goBack_button = createButton("", () -> {
+                        try {
+                            Javazon.switchScene("hello-view.fxml");
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    ImageView goBackImage =
+                            new ImageView(new Image("https://cdn-icons-png.flaticon.com/256/93/93634.png"));
+                    goBackImage.setFitHeight(28);
+                    goBackImage.setFitWidth(28);
+                    goBack_button.setGraphic(goBackImage);
+                    vBox.getChildren().add(goBack_button);
                     for (Product product : marketList) {
-                        //vBox.getChildren().add((Node)product);
                         try {
                             Scene scene = AccountController.current.addToMarket(product);
                             Node node = scene.getRoot();
@@ -172,14 +205,38 @@ public class MainProductPageController {
         HBox hbox = new HBox();
         hbox.setSpacing(10);
         hbox.setPadding(new Insets(10));
-        hbox.getChildren().addAll(logoImage, generateSearchBar(), sell_product_button, sign_in_button, cart_button,
-                myMarket_button);
+        ButtonBar buttonBar = new ButtonBar();
+        Button buyer = new Button("Buyer");
+        Button seller = new Button("Seller");
+        buttonBar.getButtons().addAll(buyer, seller);
+        hbox.getChildren().addAll(logoImage, generateSearchBar(), sell_product_button, sign_in_button, buttonBar);
         StackPane stackPane1 = new StackPane(hbox);
         BackgroundFill backgroundFill =
                 new BackgroundFill(Color.web("#ADD8E6"), CornerRadii.EMPTY, javafx.geometry.Insets.EMPTY);
         Background background = new Background(backgroundFill);
         stackPane1.setBackground(background);
-        return stackPane1;
+        if (AccountController.current != null && AccountController.current.getStatus() == Account.Status.SIGNED_IN) {
+            sign_in_button.setText("Hello, " + AccountController.current.getFirstName() + "\nAccount");
+            buyer.setOnAction(event -> {
+                hbox.getChildren().remove(myMarket_button);
+                seller.setStyle("-fx-background-color: #FFFFFF");
+                System.out.println("Buyer selected");
+                buyer.setStyle("-fx-background-color: #FFFF00");
+                AccountController.current.setRole(BUYER);
+                hbox.getChildren().add(cart_button);
+            });
+            seller.setOnAction(event -> {
+                hbox.getChildren().remove(cart_button);
+                buyer.setStyle("-fx-background-color: #FFFFFF");
+                System.out.println("Seller selected");
+                seller.setStyle("-fx-background-color: #FFFF00");
+                AccountController.current.setRole(SELLER);
+                hbox.getChildren().add(myMarket_button);
+            });
+        }
+        StackPane stackPane = new StackPane(hbox);
+        stackPane.setStyle("-fx-background-color: #00ffff;");
+        return stackPane;
     }
     private StackPane generateBottomHeader() {
         ComboBox<String> comboBox = new ComboBox<>();

@@ -158,7 +158,6 @@ public class AccountController {
                 System.out.println("signed in");
                 account.setStatus(Account.Status.SIGNED_IN);
                 current = account;
-                //MainProductPageController.getInstance().getSignInButton().setText("user's name");
                 Javazon.switchScene("hello-view.fxml");
             } else {
                 System.out.println("Username and password do not match");

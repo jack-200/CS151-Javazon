@@ -41,12 +41,13 @@ public class ProductManager implements Serializable {
         return products;
     }
     // will use later
-    public Product searchProduct(String name) {
+    public ArrayList<Product> searchProduct(String name) {
+        ArrayList<Product> searchResult = new ArrayList<>();
         for (Product product : products) {
             if (product.getName().equals(name)) {
-                return product;
+                searchResult.add(product);
             }
         }
-        return null;
+        return searchResult;
     }
 }
