@@ -3,10 +3,7 @@ package edu.sjsu.cs.cs151javazon;
 import edu.sjsu.cs.cs151javazon.exceptions.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -20,17 +17,18 @@ import static edu.sjsu.cs.cs151javazon.Javazon.showFadingPopup;
 public class AccountController {
     static Account current = null;
     ArrayList<Account> accounts = AccountManager.getInstance().deserializeArrList(textFile);
-    //ArrayList<Product> myMarket = AccountManager.getInstance().deserializeArrList(current.getMyMarket());
     @FXML
     private Label FirstNameLabel, LastNameLabel, EmailLabel, UsernameLabel, PasswordLabel, AddressLabel;
     @FXML
-    private TextField firstname, lastname, email, username, password, address, paymentMethod;
+    private TextField firstname, lastname, email, username, address, paymentMethod;
     @FXML
     private Text passwordReq, uppercaseReq, lowercaseReq, specialCharReq, numberReq, lengthReq;
     @FXML
     private Hyperlink DontHaveAccount, HaveAccount;
     @FXML
     private Button buyer, seller, goBack;
+    @FXML
+    private PasswordField passwordField;
     public AccountController() throws IOException, ClassNotFoundException { }
     @FXML
     protected void onBuyerClick() {
@@ -44,10 +42,10 @@ public class AccountController {
             !username.getText().isEmpty()) {
             if (Account.getInstance() == null) {
                 try {
-                    checkPassword(password.getText());
+                    checkPassword(passwordField.getText());
                     if (AccountManager.getInstance().searchAccount(username.getText()) == null) {
                         Account account = Account.getInstance(firstname.getText(), lastname.getText(), email.getText(),
-                                username.getText(), password.getText());
+                                username.getText(), passwordField.getText());
                         current = account;
                         accounts.add(account);
                         AccountManager.getInstance().loadAccount(accounts);
@@ -150,11 +148,11 @@ public class AccountController {
     }
     @FXML
     protected void onSignInClick(ActionEvent event) {
-        if (!username.getText().isEmpty() && !password.getText().isEmpty()) {
+        if (!username.getText().isEmpty() && !passwordField.getText().isEmpty()) {
             Account account = AccountManager.getInstance().searchAccount(username.getText());
             if (account == null) {
                 showFadingPopup(event, "Account does not exist");
-            } else if (password.getText().equals(account.getPassword())) {
+            } else if (passwordField.getText().equals(account.getPassword())) {
                 showFadingPopup(event, "Signed In");
                 account.setStatus(Account.Status.SIGNED_IN);
                 current = account;
