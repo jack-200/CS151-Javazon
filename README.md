@@ -1,6 +1,6 @@
 # CS151-Javazon
 
-An Amazon-inspired e-commerce Java application by Jack Liang, Youkyoung Kim, and Jenny Le.
+An Amazon-inspired e-commerce Java application by Team 1, comprising members Jack Liang, Youkyoung Kim, and Jenny Le.
 
 ![image](https://github.com/jack-200/CS151-Javazon/assets/86848773/bc6b422b-9412-47ab-86ab-4b54e84e60ee)
 
