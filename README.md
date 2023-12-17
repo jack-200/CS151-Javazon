@@ -1,6 +1,8 @@
-# Javazon
+# CS151-Javazon
 
 An Amazon-inspired e-commerce Java application by Jack Liang, Youkyoung Kim, and Jenny Le.
+
+![image](https://github.com/jack-200/CS151-Javazon/assets/86848773/bc6b422b-9412-47ab-86ab-4b54e84e60ee)
 
 ### Breakdown of Responsibilities & Contributions:
 
@@ -99,6 +101,3 @@ Buyer & Seller:
 1. `git clone https://github.com/jack-200/CS151-Javazon.git`
 2. Open project in IntelliJ IDEA to handle all the dependencies automatically.
 3. Run Javazon.java in the IDE.
-
-**Snapshot of the running program:**
-![image](https://github.com/jack-200/CS151-Javazon/assets/86848773/bc6b422b-9412-47ab-86ab-4b54e84e60ee)
