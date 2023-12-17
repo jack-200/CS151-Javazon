@@ -93,3 +93,4 @@ Seller:
 3. Run Javazon.java in the IDE.
 
 **Snapshot of the running program:**
+![image](https://github.com/jack-200/CS151-Javazon/assets/86848773/bc6b422b-9412-47ab-86ab-4b54e84e60ee)
