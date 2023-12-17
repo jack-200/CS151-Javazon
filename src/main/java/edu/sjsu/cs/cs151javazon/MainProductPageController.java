@@ -35,10 +35,9 @@ public class MainProductPageController {
     private static final double COLUMN_WIDTH = 200;
     private static final double GAP = 10;
     private static final String img_path = "file:src/main/resources/images/";
-    static boolean changeOrder = false;
+    private static boolean changeOrder = false;
     private static MainProductPageController instance;
     private final GridPane gridPane = new GridPane(GAP, GAP);
-    ArrayList<Product> order = null;
     @FXML
     private Button sign_in_button;
     public static MainProductPageController getInstance() {
@@ -74,6 +73,7 @@ public class MainProductPageController {
             ColumnConstraints column = new ColumnConstraints(COLUMN_WIDTH);
             gridPane.getColumnConstraints().add(column);
         }
+        ArrayList<Product> order = null;
         if (!changeOrder) {
             order = ProductManager.getInstance().deserializeArrList(textFile);
         } else {
@@ -124,7 +124,7 @@ public class MainProductPageController {
         sell_product_button.setOnAction(event -> {
             try {
                 if (isUserSignedIn()) {
-                    FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("sellProduct.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("SellProduct.fxml"));
                     ScrollPane scrollPane = new ScrollPane();
                     scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
                     scrollPane.setPrefViewportHeight(450);

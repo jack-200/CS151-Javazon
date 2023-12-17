@@ -19,10 +19,10 @@ import static edu.sjsu.cs.cs151javazon.Javazon.showFadingPopup;
 import static edu.sjsu.cs.cs151javazon.ProductManager.textFile;
 
 public class SellProductController {
-    static Product current = null;
+    public static Product current = null;
+    private final ArrayList<Product> products = ProductManager.getInstance().deserializeArrList(textFile);
     @FXML
     public TextField name, price, url;
-    ArrayList<Product> products = ProductManager.getInstance().deserializeArrList(textFile);
     @FXML
     private TextArea description;
     @FXML
@@ -60,7 +60,7 @@ public class SellProductController {
                 out1.writeObject(AccountController.current.getMyMarket());
                 showFadingPopup(event, "Product Added\n" + "Total number of products: " + products.size());
                 // update vbox inside scroll pane
-                FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("sellProduct.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(Javazon.class.getResource("SellProduct.fxml"));
                 ScrollPane sc = (ScrollPane) Javazon.getStage().getScene().getRoot();
                 VBox vbox = (VBox) sc.getContent();
                 vbox.getChildren().addAll((Pane) fxmlLoader.load());
