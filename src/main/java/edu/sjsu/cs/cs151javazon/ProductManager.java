@@ -38,7 +38,7 @@ public class ProductManager implements Serializable {
         try {
             FileInputStream fileInputStream = new FileInputStream(file);
             ObjectInputStream in = new ObjectInputStream(fileInputStream);
-            products = (ArrayList<Product>) in.readObject(); // fix
+            products = (ArrayList<Product>) in.readObject();
             ProductManager.numProducts = products.size();
             return products;
         } catch (EOFException | ClassNotFoundException e) {
@@ -48,10 +48,6 @@ public class ProductManager implements Serializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-    public ArrayList<Product> addProduct(Product p) {
-        products.add(p);
-        return products;
     }
     public ArrayList<Product> searchString(String strToSearch) {
         ArrayList<Product> searchResult = new ArrayList<>();

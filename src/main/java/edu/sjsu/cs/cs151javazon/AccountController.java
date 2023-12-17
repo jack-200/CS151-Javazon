@@ -3,7 +3,9 @@ package edu.sjsu.cs.cs151javazon;
 import edu.sjsu.cs.cs151javazon.exceptions.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -18,23 +20,14 @@ public class AccountController {
     static Account current = null;
     ArrayList<Account> accounts = AccountManager.getInstance().deserializeArrList(textFile);
     @FXML
-    private Label FirstNameLabel, LastNameLabel, EmailLabel, UsernameLabel, PasswordLabel, AddressLabel;
+    private TextField firstname, lastname, email, username, address;
     @FXML
-    private TextField firstname, lastname, email, username, address, paymentMethod;
-    @FXML
-    private Text passwordReq, uppercaseReq, lowercaseReq, specialCharReq, numberReq, lengthReq;
-    @FXML
-    private Hyperlink DontHaveAccount, HaveAccount;
+    private Text uppercaseReq, lowercaseReq, specialCharReq, numberReq, lengthReq;
     @FXML
     private Button buyer, seller, goBack;
     @FXML
     private PasswordField passwordField;
-    public AccountController() throws IOException, ClassNotFoundException { }
-    @FXML
-    protected void onBuyerClick() {
-    }
-    @FXML
-    protected void onSellerClick() {
+    public AccountController() throws IOException, ClassNotFoundException {
     }
     @FXML
     protected void onSignUpClick(ActionEvent event) throws PasswordException {
