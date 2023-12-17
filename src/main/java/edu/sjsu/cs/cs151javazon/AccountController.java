@@ -17,8 +17,8 @@ import static edu.sjsu.cs.cs151javazon.HelloController.loadMainProductPageHelper
 import static edu.sjsu.cs.cs151javazon.Javazon.showFadingPopup;
 
 public class AccountController {
-    static Account current = null;
-    ArrayList<Account> accounts = AccountManager.getInstance().deserializeArrList(textFile);
+    public static Account current = null;
+    private final ArrayList<Account> accounts = AccountManager.getInstance().deserializeArrList(textFile);
     @FXML
     private TextField firstname, lastname, email, username, address;
     @FXML
@@ -130,7 +130,7 @@ public class AccountController {
             current.setAddress(address.getText());
             if (buyer.isPressed()) {
                 current.setRole(Account.userRoles.BUYER);
-            } else {
+            } else if (seller.isPressed()) {
                 current.setRole(Account.userRoles.SELLER);
             }
             current.setStatus(Account.Status.SIGNED_IN);
