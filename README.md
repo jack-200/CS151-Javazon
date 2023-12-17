@@ -6,10 +6,10 @@ An Amazon-inspired e-commerce Java application by Jack Liang, Youkyoung Kim, and
 
 **Diagrams:**
 
-- Class: Jack
-- Sequence: Jenny
-- State: Youkyoung
-- Use Case: Jack
+- [Class](diagrams/JavazonClassDiagram.png): Jack
+- [Sequence](diagrams/JavazonSequenceDiagram.pdf): Jenny
+- [State](diagrams/JavazonStateDiagram.pdf): Youkyoung
+- [Use Case](diagrams/JavazonUseCaseDiagram.pdf): Jack
 
 **User Features:**
 
