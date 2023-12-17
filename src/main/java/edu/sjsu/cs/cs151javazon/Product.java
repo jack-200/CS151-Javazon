@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -14,6 +15,7 @@ import java.util.Objects;
 import static edu.sjsu.cs.cs151javazon.Javazon.showFadingPopup;
 
 public class Product implements Serializable {
+    @Serial
     private static final long serialVersionUID = 8248061374072736483L;
     private static Product instance;
     private String name, description, url;

@@ -23,9 +23,7 @@ public class ProductPageController {
     @FXML
     private MenuItem quantity;
     @FXML
-    private Button addToCart, buyNow, addReview;
-    @FXML
-    private CheckBox isGift;
+    private Button addToCart, buyNow;
     @FXML
     private MenuButton menuButton;
     public Label getName() {
@@ -43,8 +41,6 @@ public class ProductPageController {
     public Button getBuyNow() { return buyNow; }
     public Button getAddToCart() { return addToCart; }
     public MenuItem getQuantity() { return quantity; }
-    public CheckBox getIsGift() { return isGift; }
-    //public MenuItem getQuantity(){ return quantity.get}
     @FXML
     protected void onGoBackClick(ActionEvent event) {
         loadMainProductPageHelper(event);

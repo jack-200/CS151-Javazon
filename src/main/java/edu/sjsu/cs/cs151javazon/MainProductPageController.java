@@ -354,6 +354,4 @@ public class MainProductPageController {
             System.out.println("Did not find " + enteredText);
         }
     }
-    public Button getSignInButton() { return sign_in_button; }
-    public void setSignInButton(Button sign_in_button) { this.sign_in_button = sign_in_button; }
 }
