@@ -22,12 +22,14 @@ An Amazon-inspired e-commerce Java application by Jack Liang, Youkyoung Kim, and
     - Confirm that the username exists and matches the provided password.
     - Adjust the size of the scene and inner contents, achieved by wrapping AnchorPane inside StackPane.
 - Users are notified of program flow through toast notifications (Jack).
+- Users can provide a rating and review for products (Jack).
 
 **Product Features:**
 
 - Main Product Page: Jack
-    - Dynamically updates layout based on window dimensions.
+    - Dynamic layout updates based on window dimensions.
     - Hosts and connects to various buttons and options.
+    - Sort by Price and Ratings (Youkyoung)
 - Individual Product Pages: Youkyoung
     - Click on the product name, which serves as a hyperlink, to open the product information page when pressed. Here,
       users can view product details, add reviews, make a purchase, or add the product to the shopping cart. After
@@ -73,18 +75,24 @@ The program has been tested on Windows 10/11 and macOS.
 Guest:
 
 - Browse as guest mode with limited functionality.
-  Buyer:
-- Sign in and select Buyer mode.
-- Use the search bar or the product filters to quickly search for a product.
-- Select a product of interest.
-- Select quantity then select Add to Cart or Buy Now.
-- In the Checkout page, review the items in the cart then proceed to checkout.
+
+Buyer:
+
+- Sign in and choose the Buyer mode.
+- Use the search bar or sorting options to quickly locate a desired product.
+- Choose a product of interest.
+- Specify the quantity and then proceed to either Add to Cart or Buy Now.
+- On the Shopping Cart page, review cart contents before proceeding to checkout.
 
 Seller:
 
 - Sign in and select Seller mode.
 - Fill out all product information and provide an image.
 - Check if the product got added by returning to the main page or checking My Market.
+
+Buyer & Seller:
+
+- Provide a rating and review for products.
 
 **Steps to run Javazon:**
 
